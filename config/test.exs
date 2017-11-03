@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :pokedex_app, PokedexApp.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: "gacel",
   database: "pokedex_app_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

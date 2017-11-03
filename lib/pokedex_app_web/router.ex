@@ -16,6 +16,7 @@ defmodule PokedexAppWeb.Router do
   scope "/api", PokedexAppWeb do
     pipe_through :api
 
+    resources "/pokemons", PokemonController, except: [:new, :edit]
     resources "/languages", LanguageController, except: [:new, :edit]
   end
 
