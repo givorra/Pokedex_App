@@ -23,13 +23,16 @@ interface FetchPokemonsState {
   pokemons2show: Pokemon[]
   loading: boolean
   name_filter: string
+  favourite_filter: boolean
 }
 
 export default class FetchPokemons extends React.Component<{}, FetchPokemonsState> {
   constructor() {
     super()
-    this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: "Gacel"}
-    this.handleChange = this.handleChange.bind(this);
+    this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: '', favourite_filter: false}
+    this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
+    this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this);
+
     // Get the data from our API.
     fetch('/api/pokemons')
       .then((response) => response.json() as Promise<ApiResponse>)
@@ -38,23 +41,34 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
       })
   }
 
-  handleChange(event) {
-    console.error("------------------------ Pepee -------------------------\n\n")
-    //this.state.pokemons.filter(key => this.state.pokemons[key].name == "Gacel")
-    //this.state.pokemons = {} as Pokemon[]
-    //this.setState({pokemons: this.state.pokemons.filter(function(item) {return item.name >= "Gacel"})})
-    //alert(event.target.value)
-    var pokemons2show = this.state.pokemons.filter(function(item) {return item.name.toLowerCase().match(event.target.value.toLowerCase())})
-    //this.setState({pokemons: []})
+  private applyFilters(name_filter: string, favourite_filter: boolean) {
+    var pokemons2show = this.state.pokemons.filter(function(item) {
+      return (item.name.toLowerCase().match(name_filter.toLowerCase()) &&
+        (favourite_filter == false || item.favourite == true)
+      )})
     this.setState({pokemons2show: pokemons2show})
+  }
+
+  private handleNameFilterChange(event) {
+    this.setState({name_filter: event.target.value})
+    this.applyFilters(event.target.value, this.state.favourite_filter)
+  }
+
+  private handleFavouriteFilterChange(event) {
+    this.setState({favourite_filter: event.target.value})
+    this.applyFilters(this.state.name_filter, event.target.value)
   }
 
   private renderPokemonsTable() {
     return (
-      <form /*onSubmit={this.handleSubmit}*/>
+      <form>
         <label>
           Filter by name:
-          <input type="text" /*value={this.state.name_filter}*/ onChange={this.handleChange} />
+          <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+        </label>
+        <label>
+          Show favourites only
+          <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
         </label>
         <Table>
           <thead>
