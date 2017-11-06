@@ -55,8 +55,8 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
   }
 
   private handleFavouriteFilterChange(event) {
-    this.setState({favourite_filter: event.target.value})
-    this.applyFilters(this.state.name_filter, event.target.value)
+    this.setState({favourite_filter: event.target.checked})
+    this.applyFilters(this.state.name_filter, event.target.checked)
   }
 
   private renderPokemonsTable() {
