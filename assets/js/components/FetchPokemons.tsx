@@ -35,7 +35,7 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
 
     // Get the data from our API.
     fetch('/api/pokemons')
-      .then((response) => response.json() as Promise<ApiResponse>)
+      .then((response) => response.json())
       .then((data) => {
         this.setState({ pokemons: data.data,  pokemons2show: data.data, loading: false })
       })
@@ -62,14 +62,22 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
   private renderPokemonsTable() {
     return (
       <form>
-        <label>
-          Filter by name:
-          <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-        </label>
-        <label>
-          Show favourites only
-          <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
-        </label>
+        <Table>
+          <tr>
+            <th>
+              <label>
+                {'Filter by name:  '}
+                <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+              </label>
+            </th>
+            <th>
+              <label>
+                {'Show favourites only  '}
+                <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
+              </label>
+            </th>
+          </tr>
+        </Table>
         <Table>
           <thead>
             <tr>
