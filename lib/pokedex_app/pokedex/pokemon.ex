@@ -8,17 +8,17 @@ defmodule PokedexApp.Pokedex.Pokemon do
     field :evolution_to, :string
     field :favourite, :boolean
     field :name, :string
-    field :tipe1, :string
-    field :tipe2, :string
+    field :type1, :string
+    field :type2, :string
 
     timestamps()
   end
 
   @doc false
-  def changeset(%Pokemon{} = pokemon, attrs, filters \\ [:name, :description, :tipe1, :tipe2, :evolution_to, :favourite]) do
+  def changeset(%Pokemon{} = pokemon, attrs, filters \\ [:name, :description, :type1, :type2, :evolution_to, :favourite]) do
     pokemon
     |> cast(attrs, filters)
-    |> validate_required([:name, :description, :tipe1])
+    |> validate_required([:name, :description, :type1])
     |> validate_length(:name, min: 4)
     |> validate_length(:name, max: 24)
     |> validate_length(:description, min: 30)

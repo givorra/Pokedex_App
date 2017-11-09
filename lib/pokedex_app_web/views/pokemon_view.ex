@@ -14,8 +14,8 @@ defmodule PokedexAppWeb.PokemonView do
     %{id: pokemon.id,
       name: pokemon.name,
       description: pokemon.description,
-      tipe1: pokemon.tipe1,
-      tipe2: pokemon.tipe2,
+      type1: pokemon.type1,
+      type2: pokemon.type2,
       favourite: pokemon.favourite,
       evolution_to: pokemon.evolution_to}
   end

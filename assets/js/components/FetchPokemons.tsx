@@ -1,21 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { Table, Button } from 'reactstrap'
+import Pokemon from '../interfaces/IPokemon'
 
 // The interface for our API response
 interface ApiResponse {
   data: Pokemon[]
-}
-
-// The interface for our pokemon model.
-interface Pokemon {
-  id: number
-  name: string
-  description: string
-  evolution_to: string
-  favourite: boolean
-  tipe1: string
-  tipe2: string
 }
 
 interface FetchPokemonsState {
@@ -32,6 +22,7 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
     this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: '', favourite_filter: false}
     this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
     this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this);
+    //this.handlePokemonClick = this.handlePokemonClick.bind(this);
 
     // Get the data from our API.
     fetch('/api/pokemons')
@@ -59,7 +50,29 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
     this.applyFilters(this.state.name_filter, event.target.checked)
   }
 
+  private handlePokemonClick(index, event) {
+    alert("Pokemon name " + this.state.pokemons2show[index].name)
+    //<Link to={`/taco/${taco.name}`}>{taco.name}</Link>
+  }
+
+  private renderPokemonItems() {
+    return this.state.pokemons2show.map((pokemon, index) =>
+        <tr key={pokemon.id} data-item={pokemon} /*onClick={this.handlePokemonClick.bind(this, index)}*/ >
+          <Link to={`/pokemon-detail/${pokemon.id}`}>
+            <td>{pokemon.id}</td>
+            <td>{pokemon.name}</td>
+            <td>{pokemon.description}</td>
+            <td>{pokemon.evolution_to}</td>
+            <td>{pokemon.favourite}</td>
+            <td>{pokemon.type1}</td>
+            <td>{pokemon.type2}</td>
+          </Link>
+        </tr>
+      )
+  }
+
   private renderPokemonsTable() {
+    let pokemon_items = this.renderPokemonItems()
     return (
       <form>
         <Table>
@@ -90,18 +103,8 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
               <th>Type 2</th>
             </tr>
           </thead>
+            {pokemon_items}
           <tbody>
-            {this.state.pokemons2show.map((pokemon) =>
-              <tr key={pokemon.id}>
-                <td>{pokemon.id}</td>
-                <td>{pokemon.name}</td>
-                <td>{pokemon.description}</td>
-                <td>{pokemon.evolution_to}</td>
-                <td>{pokemon.favourite}</td>
-                <td>{pokemon.tipe1}</td>
-                <td>{pokemon.tipe2}</td>
-              </tr>
-            )}
           </tbody>
         </Table>
       </form>

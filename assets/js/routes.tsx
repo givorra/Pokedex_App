@@ -9,9 +9,9 @@ import PokemonDetail from './components/PokemonDetail'
 
 export const routes = (
   <Root>
-    <Route exact path="/" component={ Home } />
+    <Route exact path="/" component={ FetchPokemons } />
     <Route path="/counter" component={ Counter } />
-    <Route path="/fetch-pokemons" component={ FetchPokemons } />
-    <Route path="/pokemon-detail" component={ PokemonDetail } />
+    <Route path="/pokemon-detail/:id" component={ PokemonDetail } />
+    <Route path="/create-pokemon" component={ PokemonDetail } />
   </Root>
 )
