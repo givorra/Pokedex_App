@@ -57,17 +57,17 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
 
   private renderPokemonItems() {
     return this.state.pokemons2show.map((pokemon, index) =>
-        <tr key={pokemon.id} data-item={pokemon} /*onClick={this.handlePokemonClick.bind(this, index)}*/ >
-          <Link to={`/pokemon-detail/${pokemon.id}`}>
-            <td>{pokemon.id}</td>
-            <td>{pokemon.name}</td>
-            <td>{pokemon.description}</td>
-            <td>{pokemon.evolution_to}</td>
-            <td>{pokemon.favourite}</td>
-            <td>{pokemon.type1}</td>
-            <td>{pokemon.type2}</td>
-          </Link>
-        </tr>
+        <Link to={`/pokemon-detail/${pokemon.id}`}>
+          <tr key={pokemon.id} data-item={pokemon} /*onClick={this.handlePokemonClick.bind(this, index)}*/ >
+              <td>{pokemon.id}</td>
+              <td>{pokemon.name}</td>
+              <td>{pokemon.description}</td>
+              <td>{pokemon.evolution_to}</td>
+              <td>{pokemon.favourite}</td>
+              <td>{pokemon.type1}</td>
+              <td>{pokemon.type2}</td>
+          </tr>
+        </Link>
       )
   }
 
@@ -77,18 +77,21 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
       <form>
         <Table>
           <tr>
-            <th>
+            <td>
               <label>
                 {'Filter by name:  '}
                 <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
               </label>
-            </th>
-            <th>
+            </td>
+            <td>
               <label>
                 {'Show favourites only  '}
                 <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
               </label>
-            </th>
+            </td>
+            <td>
+              <Button color="primary"> <Link to="/create-pokemon"> Add new </Link></Button>
+            </td>
           </tr>
         </Table>
         <Table>
@@ -103,8 +106,8 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
               <th>Type 2</th>
             </tr>
           </thead>
-            {pokemon_items}
           <tbody>
+            {pokemon_items}
           </tbody>
         </Table>
       </form>
