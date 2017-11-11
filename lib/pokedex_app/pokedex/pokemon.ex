@@ -4,12 +4,12 @@ defmodule PokedexApp.Pokedex.Pokemon do
   alias PokedexApp.Pokedex.Pokemon
 
   schema "pokemons" do
-    field :description, :string
-    field :evolution_to, :string
-    field :favourite, :boolean
-    field :name, :string
-    field :type1, :string
-    field :type2, :string
+    field :description, :string, default: ""
+    field :evolution_to, :string, default: ""
+    field :favourite, :boolean, default: ""
+    field :name, :string, default: ""
+    field :type1, :string, default: ""
+    field :type2, :string, default: ""
 
     timestamps()
   end

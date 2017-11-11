@@ -22,7 +22,7 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
     this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: '', favourite_filter: false}
     this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
     this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this);
-    //this.handlePokemonClick = this.handlePokemonClick.bind(this);
+    this.handleNewPokemon = this.handleNewPokemon.bind(this);
 
     // Get the data from our API.
     fetch('/api/pokemons')
@@ -50,15 +50,17 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
     this.applyFilters(this.state.name_filter, event.target.checked)
   }
 
-  private handlePokemonClick(index, event) {
-    alert("Pokemon name " + this.state.pokemons2show[index].name)
-    //<Link to={`/taco/${taco.name}`}>{taco.name}</Link>
+  private handlePokemonClick(id, event) {
+    this.props.history.push('/pokemon-detail/' + id)
+  }
+
+  private handleNewPokemon(event) {
+    this.props.history.push('/create-pokemon')
   }
 
   private renderPokemonItems() {
     return this.state.pokemons2show.map((pokemon, index) =>
-          <tr key={pokemon.id} data-item={pokemon} /*onClick={this.handlePokemonClick.bind(this, index)}*/ >
-              <Link to={`/pokemon-detail/${pokemon.id}`}>
+          <tr key={pokemon.id} onClick={this.handlePokemonClick.bind(this, pokemon.id)} >
                 <td>{pokemon.id}</td>
                 <td>{pokemon.name}</td>
                 <td>{pokemon.description}</td>
@@ -66,7 +68,6 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
                 <td>{pokemon.favourite}</td>
                 <td>{pokemon.type1}</td>
                 <td>{pokemon.type2}</td>
-            </Link>
           </tr>
       )
   }
@@ -76,23 +77,25 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
     return (
       <div>
       <Table hover>
-        <tr>
-          <td>
-            <label>
-              {'Filter by name:  '}
-              <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-            </label>
-          </td>
-          <td>
-            <label>
-              {'Show favourites only  '}
-              <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
-            </label>
-          </td>
-          <td>
-            <Button color="primary"> <Link to="/create-pokemon"> Add new </Link></Button>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>
+              <label>
+                {'Filter by name:  '}
+                <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+              </label>
+            </td>
+            <td>
+              <label>
+                {'Show favourites only  '}
+                <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
+              </label>
+            </td>
+            <td>
+              <Button color="primary" onClick={this.handleNewPokemon}>Add new</Button>
+            </td>
+          </tr>
+        </tbody>
       </Table>
       <Table hover>
         <thead>
