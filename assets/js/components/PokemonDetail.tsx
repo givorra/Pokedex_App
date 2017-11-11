@@ -156,7 +156,6 @@ export default class PokemonDetail extends React.Component <{}, IPokemonsDetailS
         method: method,
         headers: headers,
         body: JSON.stringify({"pokemon": this.state.pokemon})
-
         })
       .then((response) => response.json())
       //.then((data) =>  alert( JSON.stringify( data )))
