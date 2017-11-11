@@ -57,60 +57,60 @@ export default class FetchPokemons extends React.Component<{}, FetchPokemonsStat
 
   private renderPokemonItems() {
     return this.state.pokemons2show.map((pokemon, index) =>
-        <Link to={`/pokemon-detail/${pokemon.id}`}>
           <tr key={pokemon.id} data-item={pokemon} /*onClick={this.handlePokemonClick.bind(this, index)}*/ >
-              <td>{pokemon.id}</td>
-              <td>{pokemon.name}</td>
-              <td>{pokemon.description}</td>
-              <td>{pokemon.evolution_to}</td>
-              <td>{pokemon.favourite}</td>
-              <td>{pokemon.type1}</td>
-              <td>{pokemon.type2}</td>
+              <Link to={`/pokemon-detail/${pokemon.id}`}>
+                <td>{pokemon.id}</td>
+                <td>{pokemon.name}</td>
+                <td>{pokemon.description}</td>
+                <td>{pokemon.evolution_to}</td>
+                <td>{pokemon.favourite}</td>
+                <td>{pokemon.type1}</td>
+                <td>{pokemon.type2}</td>
+            </Link>
           </tr>
-        </Link>
       )
   }
 
   private renderPokemonsTable() {
     let pokemon_items = this.renderPokemonItems()
     return (
-      <form>
-        <Table>
+      <div>
+      <Table hover>
+        <tr>
+          <td>
+            <label>
+              {'Filter by name:  '}
+              <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+            </label>
+          </td>
+          <td>
+            <label>
+              {'Show favourites only  '}
+              <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
+            </label>
+          </td>
+          <td>
+            <Button color="primary"> <Link to="/create-pokemon"> Add new </Link></Button>
+          </td>
+        </tr>
+      </Table>
+      <Table hover>
+        <thead>
           <tr>
-            <td>
-              <label>
-                {'Filter by name:  '}
-                <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-              </label>
-            </td>
-            <td>
-              <label>
-                {'Show favourites only  '}
-                <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
-              </label>
-            </td>
-            <td>
-              <Button color="primary"> <Link to="/create-pokemon"> Add new </Link></Button>
-            </td>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Evolution</th>
+            <th>Favourite</th>
+            <th>Type 1</th>
+            <th>Type 2</th>
           </tr>
-        </Table>
-        <Table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Evolution</th>
-              <th>Favourite</th>
-              <th>Type 1</th>
-              <th>Type 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pokemon_items}
-          </tbody>
-        </Table>
-      </form>
+        </thead>
+        <tbody>
+          {pokemon_items}
+        </tbody>
+      </Table>
+      </div>
     )
   }
 
