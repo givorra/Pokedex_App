@@ -16,7 +16,7 @@ interface FetchPokemonsState {
   favourite_filter: boolean
 }
 
-export default class FetchPokemons extends React.Component<{}, FetchPokemonsState> {
+export default class FetchPokemons extends React.Component<any, FetchPokemonsState> {
   constructor() {
     super()
     this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: '', favourite_filter: false}

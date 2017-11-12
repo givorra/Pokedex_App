@@ -13,7 +13,7 @@ interface IPokemonsDetailState {
   mode: Mode
 }
 
-export default class PokemonDetail extends React.Component <{}, IPokemonsDetailState> {
+export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
   constructor(props: number) {
       super(props)
       this.handleName = this.handleName.bind(this)
