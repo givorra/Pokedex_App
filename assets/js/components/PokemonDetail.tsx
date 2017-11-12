@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Table, Button, ButtonGroup } from 'reactstrap'
+import { Table, Button, ButtonGroup, Form, Col, FormGroup, Label, Input, FormText } from 'reactstrap'
 import Pokemon from '../interfaces/IPokemon'
 
 enum Mode {
@@ -61,40 +61,32 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
 
   private renderPokemonFields() {
     return (
-    <div>
-      <Table>
-        <tbody>
-          <tr>
-            <th> <label> (*) Name: </label> </th>
-            <th> <input name="name" type="text" value={this.state.pokemon.name} onChange={this.handleName}/> </th>
-          </tr>
-          <tr>
-            <th> <label> (*) Type 1: </label> </th>
-            <th> <input name="type1" type="text" value={this.state.pokemon.type1} onChange={this.handleType1}/> </th>
-          </tr>
-          <tr>
-            <th> <label> Type 2: </label> </th>
-            <th> <input name="type2" type="text" value={this.state.pokemon.type2} onChange={this.handleType2}/> </th>
-          </tr>
-          <tr>
-            <th> <label> Evolution to: </label> </th>
-            <th> <input name="evolution_to" type="text" value={this.state.pokemon.evolution_to} onChange={this.handleEvolutionTo}/> </th>
-          </tr>
-          <tr>
-            <th> <label> Is favourite </label> </th>
-            <th> <input name="favourite" type="Checkbox" checked={this.state.pokemon.favourite} onChange={this.handleFavourite}/> </th>
-          </tr>
-          <tr>
-            <th> <label> (*) Description </label> </th>
-            <th> <textarea name="description" value={this.state.pokemon.description} onChange={this.handleDescription}/> </th>
-          </tr>
-        </tbody>
-      </Table>
-      <ButtonGroup>
-        <Button color="primary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
-        <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
-      </ButtonGroup>
-    </div>
+      <Form>
+        <FormGroup row>
+          <Label for="pokemonName">Name</Label>
+          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.name}/>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="pokemonType1">Type 1</Label>
+          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.type1}/>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="pokemonType2">Type 2</Label>
+          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.type2}/>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="pokemonEvolutionTo">Evolution to</Label>
+          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.evolution_to}/>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="pokemonDescription">Description</Label>
+          <Input type="textarea" name="description" id="pokemonDescription" value={this.state.pokemon.description} />
+        </FormGroup>
+        <ButtonGroup>
+          <Button color="primary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
+          <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
+        </ButtonGroup>
+      </Form>
     )
   }
 
