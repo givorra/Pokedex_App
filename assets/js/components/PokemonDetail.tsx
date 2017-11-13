@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Table, Button, ButtonGroup, Form, Col, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Table, Button, ButtonGroup, Col, Label } from 'reactstrap'
+import { AvForm, AvField, AvInput, AvGroup } from 'availity-reactstrap-validation'
 import Pokemon from '../interfaces/IPokemon'
 
 enum Mode {
@@ -7,10 +8,17 @@ enum Mode {
     PUT = 1,
 }
 
+interface IErrors {
+  name: string
+  type1: string
+  description: string
+}
+
 interface IPokemonsDetailState {
   pokemon: Pokemon
   loading: boolean
   mode: Mode
+  errors: IErrors
 }
 
 export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
@@ -41,7 +49,8 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           type2: ""
           },
         loading: false,
-        mode: mode
+        mode: mode,
+        errors: { name: "", type1: "", description: ""}
       }
       this.state = initialState
   }
@@ -61,32 +70,29 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
 
   private renderPokemonFields() {
     return (
-      <Form>
-        <FormGroup row>
-          <Label for="pokemonName">Name</Label>
-          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.name}/>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="pokemonType1">Type 1</Label>
-          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.type1}/>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="pokemonType2">Type 2</Label>
-          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.type2}/>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="pokemonEvolutionTo">Evolution to</Label>
-          <Input type="text" name="name" id="pokemonName" value={this.state.pokemon.evolution_to}/>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="pokemonDescription">Description</Label>
-          <Input type="textarea" name="description" id="pokemonDescription" value={this.state.pokemon.description} />
-        </FormGroup>
+      <AvForm>
+        <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
+          minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
+        <AvField name="type1" label="Type 1" required onChange={this.handleType1} value={this.state.pokemon.type1}
+          helpMessage="  (*)"/>
+        <AvField name="type2" label="Type 2" onChange={this.handleType2} value={this.state.pokemon.type2} />
+        <AvField name="evolution_to" label="Evolution to" onChange={this.handleEvolutionTo} value={this.state.pokemon.evolution_to} />
+        <AvField type="textarea" name="description" label="Description" onChange={this.handleDescription}
+          required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
+        <AvGroup>
+          <Label check >
+            <AvInput type="checkbox" name="favourite" onChange={this.handleFavourite} value={this.state.pokemon.favourite}/>
+            Mark as favourite
+          </Label>
+          <br /><br />
+        </AvGroup>
         <ButtonGroup>
-          <Button color="primary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
-          <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
+          <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
+          <Col sm={2}>
+            <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
+          </Col>
         </ButtonGroup>
-      </Form>
+      </AvForm>
     )
   }
 
@@ -169,9 +175,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     return (
       <div>
         <h1>Pokemon Detail</h1>
-        <form>
-          {content}
-        </form>
+        {content}
       </div>
     )
   }

@@ -24,6 +24,10 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this);
     this.handleNewPokemon = this.handleNewPokemon.bind(this);
 
+  }
+
+  componentWillMount() {
+    this.setState({loading : true})
     // Get the data from our API.
     fetch('/api/pokemons')
       .then((response) => response.json())
@@ -127,7 +131,6 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
         <h1>List of your pokemons</h1>
         {content}
         <br /><br />
-        <p><Link to="/">Back to home</Link></p>
       </div>
     )
   }
