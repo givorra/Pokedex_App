@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { Table, Button } from 'reactstrap'
+import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle,
+  Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label } from 'reactstrap'
 import Pokemon from '../interfaces/IPokemon'
 
 // The interface for our API response
@@ -63,72 +64,64 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
   }
 
   private renderPokemonItems() {
-    return this.state.pokemons2show.map((pokemon, index) =>
-          <tr key={pokemon.id} onClick={this.handlePokemonClick.bind(this, pokemon.id)} >
-                <td>{pokemon.id}</td>
-                <td>{pokemon.name}</td>
-                <td>{pokemon.description}</td>
-                <td>{pokemon.evolution_to}</td>
-                <td>{pokemon.favourite}</td>
-                <td>{pokemon.type1}</td>
-                <td>{pokemon.type2}</td>
-          </tr>
-      )
+    return (
+      <CardDeck>
+      {this.state.pokemons2show.map((pokemon, index) =>
+        <div className="w-50 p-3" key={pokemon.id}>
+          <Card key={pokemon.id} outline color="primary">
+            <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
+            <CardBody>
+              <CardTitle>{pokemon.name}</CardTitle>
+              <CardText>{pokemon.description}</CardText>
+              <ButtonGroup  className="w-100">
+                <Button color="danger" className="w-50">Delete</Button>
+                <Col sm={2} />
+                <Button color="primary" className="w-50" onClick={this.handlePokemonClick.bind(this, pokemon.id)}>View</Button>
+              </ButtonGroup>
+            </CardBody>
+          </Card>
+        </div>
+        )
+      }
+      </CardDeck>
+    )
   }
 
-  private renderPokemonsTable() {
-    let pokemon_items = this.renderPokemonItems()
+  private renderFilters() {
     return (
-      <div>
-      <Table hover>
-        <tbody>
-          <tr>
-            <td>
-              <label>
-                {'Filter by name:  '}
-                <input name="name_filter" type="text" value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-              </label>
-            </td>
-            <td>
-              <label>
-                {'Show favourites only  '}
-                <input name="favourite_filter" type="Checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange} />
-              </label>
-            </td>
-            <td>
-              <Button color="primary" onClick={this.handleNewPokemon}>Add new</Button>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
-      <Table hover>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Evolution</th>
-            <th>Favourite</th>
-            <th>Type 1</th>
-            <th>Type 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pokemon_items}
-        </tbody>
-      </Table>
-      </div>
-    )
+      <Form inline>
+        <Col>
+          <FormGroup row>
+            <Label for="pokemonFilterName">Filter by name</Label>
+            <Col sm={1} />
+            <Input type="text" name="filterName" id="pokemonFilterName"
+              value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label check>
+              <Input type="checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange}/>
+              Show only favourites
+            </Label>
+          </FormGroup>
+        </Col>
+      </Form>
+      )
   }
 
   public render(): JSX.Element {
     const content = this.state.loading
       ? <p><em>Loading...</em></p>
-      : this.renderPokemonsTable()
+      : this.renderPokemonItems()
+
+    const filters = this.renderFilters()
 
     return (
       <div>
         <h1>List of your pokemons</h1>
+        <br />
+        {filters}
         {content}
         <br /><br />
       </div>
