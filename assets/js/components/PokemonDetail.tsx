@@ -1,7 +1,23 @@
 import * as React from 'react'
-import { Table, Button, ButtonGroup, Col, Label } from 'reactstrap'
+import { Table, Button, ButtonGroup, Col, Label, Modal, ModalHeader, ModalBody,
+  ModalFooter, FormGroup  }
+  from 'reactstrap'
 import { AvForm, AvField, AvInput, AvGroup } from 'availity-reactstrap-validation'
 import Pokemon from '../interfaces/IPokemon'
+
+const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnSave: true,
+  hiddenBtnOk: true, hiddenBtnCancel: true}
+const titleSavePokemon = "Save Pokemon"
+const bodySavePokemon = "¿Are you sure you want to save data?"
+
+interface IModal {
+  isOpen: boolean
+  title: string
+  body: string
+  hiddenBtnSave: boolean
+  hiddenBtnOk: boolean
+  hiddenBtnCancel: boolean
+}
 
 enum Mode {
     POST = 0,
@@ -19,6 +35,7 @@ interface IPokemonsDetailState {
   loading: boolean
   mode: Mode
   errors: IErrors
+  modal: IModal
 }
 
 export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
@@ -32,6 +49,8 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       this.handleEvolutionTo = this.handleEvolutionTo.bind(this)
       this.handleSaveData = this.handleSaveData.bind(this)
       this.handleGoBack = this.handleGoBack.bind(this)
+      this.handleModalClose = this.handleModalClose.bind(this);
+      this.handleModalSave = this.handleModalSave.bind(this);
 
       if(this.props.match.url.match("pokemon-detail"))
         var mode = Mode.PUT
@@ -50,7 +69,8 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           },
         loading: false,
         mode: mode,
-        errors: { name: "", type1: "", description: ""}
+        errors: { name: "", type1: "", description: ""},
+        modal: modalDefault
       }
       this.state = initialState
   }
@@ -70,7 +90,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
 
   private renderPokemonFields() {
     return (
-      <AvForm>
+      <AvForm onValidSubmit={this.handleSaveData}>
         <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
           minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
         <AvField name="type1" label="Type 1" required onChange={this.handleType1} value={this.state.pokemon.type1}
@@ -86,12 +106,16 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           </Label>
           <br /><br />
         </AvGroup>
+        {/*}
         <ButtonGroup>
           <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
           <Col sm={2}>
             <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
           </Col>
-        </ButtonGroup>
+        </ButtonGroup>*/}
+        <FormGroup>
+          <Button color="primary" disabled={this.state.loading}>Save data</Button>
+        </FormGroup>
       </AvForm>
     )
   }
@@ -134,6 +158,11 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
   }
 
   private persistData() {
+    let modal = Object.assign({}, modalDefault);
+    modal.title = titleSavePokemon
+    modal.isOpen = true
+    modal.hiddenBtnOk = false
+
     var route = '/api/pokemons'
     if(this.state.mode == Mode.PUT)
     {
@@ -155,25 +184,69 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
         headers: headers,
         body: JSON.stringify({"pokemon": this.state.pokemon})
         })
-      .then((response) => response.json())
+      .then((response) => {
+        if(response.ok)
+        {
+          modal.body = "Succes!"
+        }
+        else {
+          modal.body = "Error: " + response.status + " " + response.statusText
+        }
+
+        this.setState({ modal: modal})
+        //return response.json()
+      })
       //.then((data) =>  alert( JSON.stringify( data )))
   }
 
   private handleSaveData() {
-    this.persistData()
-    this.handleGoBack()
+    let modal = Object.assign({}, modalDefault);
+    modal.isOpen = true
+    modal.title = titleSavePokemon
+    modal.body = bodySavePokemon
+    modal.hiddenBtnSave = false
+    modal.hiddenBtnCancel = false
+    this.setState({modal: modal})
+
   }
 
   private handleGoBack() {
     this.props.history.push('/')
   }
 
+  private handleModalClose() {
+    this.setState({modal: modalDefault})
+  }
+
+  private handleModalSave() {
+    this.persistData()
+  }
+
+  private renderModal() {
+    return (
+      <Modal isOpen={this.state.modal.isOpen} >
+        <ModalHeader>{this.state.modal.title}</ModalHeader>
+        <ModalBody>{this.state.modal.body}</ModalBody>
+        <ModalFooter>
+          <Button color="secondary" hidden={this.state.modal.hiddenBtnCancel}
+            onClick={this.handleModalClose}>Cancel</Button>
+          <Button color="primary" hidden={this.state.modal.hiddenBtnOk}
+            onClick={this.handleGoBack}>Ok</Button>
+          <Button color="primary" hidden={this.state.modal.hiddenBtnSave}
+            onClick={this.handleModalSave}>Save</Button>
+        </ModalFooter>
+      </Modal>
+    )
+  }
+
   render(): JSX.Element {
     const content = this.state.loading
       ? <p><em>Loading...</em></p>
       : this.renderPokemonFields()
+    const modal = this.renderModal()
     return (
       <div>
+        {modal}
         <h1>Pokemon Detail</h1>
         {content}
       </div>
