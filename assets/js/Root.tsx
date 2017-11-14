@@ -6,9 +6,6 @@ export default class Root extends React.Component<{}, {}> {
     return (
       <div>
         <Container className="mt-4">
-          <header className="header">
-            <span className="logo"></span>
-          </header>
 
           <main role="main">
             {this.props.children}

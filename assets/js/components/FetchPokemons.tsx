@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle,
-  Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label,
+import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle, CardHeader,
+  Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label, Header,
   Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Pokemon from '../interfaces/IPokemon'
 
@@ -201,11 +201,16 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     return (
       <div>
         {modal}
-        <h1>List of your pokemons</h1>
-        <br />
-        {filters}
-        {content}
-        <br /><br />
+        <Card >
+          <CardImg top width="100%" src="/images/my_pokedex_logo.png" alt="Card image cap"/>
+          <CardHeader>
+            {filters}
+          </CardHeader>
+          <CardBody>
+            {content}
+            <br /><br />
+          </CardBody>
+        </Card>
       </div>
     )
   }
