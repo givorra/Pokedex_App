@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle, CardHeader,
-  Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label, Header,
+  Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label, Header, Row,
   Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Pokemon from '../interfaces/IPokemon'
 
@@ -147,30 +147,19 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
 
   private renderFilters() {
     return (
-      <Form inline>
+    <CardHeader>
+      <Row>
         <Col>
-          <FormGroup row>
-            <Label for="pokemonFilterName">Filter by name</Label>
-            <Col sm={1} />
-            <Input type="text" name="filterName" id="pokemonFilterName"
-              value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-          </FormGroup>
-        </Col>
+          <Label for="pokemonFilterName">Filter by name</Label>
+          <Input type="text" name="filterName" id="pokemonFilterName"
+            value={this.state.name_filter} onChange={this.handleNameFilterChange} />
+        </Col>{' '}
         <Col>
-          <FormGroup>
-            <Label check>
-              <Input type="checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange}/>
-              Show only favourites
-            </Label>
-          </FormGroup>
+            <Button color="primary" className="float-right" onClick={this.handleNewPokemon}><h1>+</h1></Button>
         </Col>
-        <Col>
-          <FormGroup>
-            <Button color="primary" onClick={this.handleNewPokemon}>Add new</Button>
-          </FormGroup>
-        </Col>
-      </Form>
-      )
+      </Row>
+    </CardHeader>
+    )
   }
 
   private renderModal() {
@@ -203,10 +192,12 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
         {modal}
         <Card >
           <CardImg top width="100%" src="/images/my_pokedex_logo.png" alt="Card image cap"/>
-          <CardHeader>
             {filters}
-          </CardHeader>
           <CardBody>
+            <Label check>
+              <Input type="checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange}/>
+              Show only favourites
+            </Label>
             {content}
             <br /><br />
           </CardBody>
