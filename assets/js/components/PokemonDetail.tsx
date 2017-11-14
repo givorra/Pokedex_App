@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Table, Button, ButtonGroup, Col, Label, Modal, ModalHeader, ModalBody,
+import { Table, Button, ButtonGroup, Col, Row, Label, Modal, ModalHeader, ModalBody,
   ModalFooter, FormGroup  }
   from 'reactstrap'
 import { AvForm, AvField, AvInput, AvGroup } from 'availity-reactstrap-validation'
@@ -93,9 +93,20 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       <AvForm onValidSubmit={this.handleSaveData}>
         <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
           minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
-        <AvField name="type1" label="Type 1" required onChange={this.handleType1} value={this.state.pokemon.type1}
-          helpMessage="  (*)"/>
-        <AvField name="type2" label="Type 2" onChange={this.handleType2} value={this.state.pokemon.type2} />
+        <Row>
+          <Col>
+            <Label>Type/s</Label>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AvField name="type1"  required onChange={this.handleType1} value={this.state.pokemon.type1}
+              helpMessage="  (*)"/>
+            </Col>
+            <Col>
+              <AvField name="type2" label="" onChange={this.handleType2} value={this.state.pokemon.type2} />
+            </Col>
+        </Row>
         <AvField name="evolution_to" label="Evolution to" onChange={this.handleEvolutionTo} value={this.state.pokemon.evolution_to} />
         <AvField type="textarea" name="description" label="Description" onChange={this.handleDescription}
           required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
@@ -106,15 +117,13 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           </Label>
           <br /><br />
         </AvGroup>
-        {/*}
-        <ButtonGroup>
-          <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
-          <Col sm={2}>
-            <Button color="primary" disabled={this.state.loading} onClick={this.handleSaveData}>Save data</Button>
-          </Col>
-        </ButtonGroup>*/}
         <FormGroup>
-          <Button color="primary" disabled={this.state.loading}>Save data</Button>
+          <Row>
+            <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
+            <Col sm={2}>
+              <Button color="primary" disabled={this.state.loading}>Save data</Button>
+            </Col>
+          </Row>
         </FormGroup>
       </AvForm>
     )
@@ -249,6 +258,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
         {modal}
         <h1>Pokemon Detail</h1>
         {content}
+        <br/><br/>
       </div>
     )
   }

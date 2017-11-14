@@ -38,12 +38,11 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     super()
     this.state = { pokemons: [],  pokemons2show: [], loading: true, name_filter: '',
       favourite_filter: false, modal: modalDefault}
-    this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
-    this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this);
-    this.handleNewPokemon = this.handleNewPokemon.bind(this);
-    this.handleModalClose = this.handleModalClose.bind(this);
-    this.handleModalDelete = this.handleModalDelete.bind(this);
-
+    this.handleNameFilterChange = this.handleNameFilterChange.bind(this)
+    this.handleFavouriteFilterChange = this.handleFavouriteFilterChange.bind(this)
+    this.handleNewPokemon = this.handleNewPokemon.bind(this)
+    this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleModalDelete = this.handleModalDelete.bind(this)
   }
 
   componentWillMount() {
@@ -56,11 +55,12 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     fetch('/api/pokemons')
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ pokemons: data.data,  pokemons2show: data.data, loading: false })
+        this.setState({ pokemons: data.data, loading: false })
+        this.applyFilters(data.data, this.state.name_filter, this.state.favourite_filter)
       })
   }
 
-  private applyFilters(name_filter: string, favourite_filter: boolean) {
+  private applyFilters(pokemons, name_filter: string, favourite_filter: boolean) {
     var pokemons2show = this.state.pokemons.filter(function(item) {
       return (item.name.toLowerCase().match(name_filter.toLowerCase()) &&
         (favourite_filter == false || item.favourite == true)
@@ -70,12 +70,12 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
 
   private handleNameFilterChange(event) {
     this.setState({name_filter: event.target.value})
-    this.applyFilters(event.target.value, this.state.favourite_filter)
+    this.applyFilters(this.state.pokemons, event.target.value, this.state.favourite_filter)
   }
 
   private handleFavouriteFilterChange(event) {
     this.setState({favourite_filter: event.target.checked})
-    this.applyFilters(this.state.name_filter, event.target.checked)
+    this.applyFilters(this.state.pokemons, this.state.name_filter, event.target.checked)
   }
 
   private handlePokemonClick(id, event) {
@@ -112,6 +112,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
         if(response.ok)
         {
           modal.body = "Succes!"
+          this.getPokemonsToState()
         }
         else {
           modal.body = "Error: " + response.status + " " + response.statusText
