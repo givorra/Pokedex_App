@@ -126,7 +126,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
       {this.state.pokemons2show.map((pokemon, index) =>
         <div className="w-50 p-3" key={pokemon.id}>
           <Card key={pokemon.id} outline color="primary">
-            <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
+            <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
             <CardBody>
               <CardTitle>{pokemon.name}</CardTitle>
               <CardText>{pokemon.description}</CardText>
