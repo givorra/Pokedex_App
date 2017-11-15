@@ -207,62 +207,62 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     )
   }
 
-  private renderPokemonFields() {
+  private renderForm() {
     return (
-      <Card outline color="danger">
-        <CardImg top width="100%" src="/images/pokeball_detail_card.png" alt="Card image cap" />
-        <CardBody>
-          <AvForm onValidSubmit={this.handleSaveData}>
-            <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
-              minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
+      <AvForm onValidSubmit={this.handleSaveData}>
+        <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
+          minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
+        <Row>
+          <Col>
+            <Label>Type/s</Label>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AvField name="type1"  required onChange={this.handleType1} value={this.state.pokemon.type1}
+              helpMessage="  (*)"/>
+            </Col>
+            <Col>
+              <AvField name="type2" label="" onChange={this.handleType2} value={this.state.pokemon.type2} />
+            </Col>
+        </Row>
+        <AvField name="evolution_to" label="Evolution to" onChange={this.handleEvolutionTo} value={this.state.pokemon.evolution_to} />
+        <AvField type="textarea" name="description" label="Description" onChange={this.handleDescription}
+          required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
+        <AvGroup>
+          <Label check >
+            <AvInput type="checkbox" name="favourite" onChange={this.handleFavourite} value={this.state.pokemon.favourite}/>
+            Mark as favourite
+          </Label>
+          <br /><br />
+        </AvGroup>
+          <FormGroup>
             <Row>
-              <Col>
-                <Label>Type/s</Label>
+              <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
+              <Col sm={2}>
+                <Button color="primary" disabled={this.state.loading}>Save data</Button>
               </Col>
             </Row>
-            <Row>
-              <Col>
-                <AvField name="type1"  required onChange={this.handleType1} value={this.state.pokemon.type1}
-                  helpMessage="  (*)"/>
-                </Col>
-                <Col>
-                  <AvField name="type2" label="" onChange={this.handleType2} value={this.state.pokemon.type2} />
-                </Col>
-            </Row>
-            <AvField name="evolution_to" label="Evolution to" onChange={this.handleEvolutionTo} value={this.state.pokemon.evolution_to} />
-            <AvField type="textarea" name="description" label="Description" onChange={this.handleDescription}
-              required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
-            <AvGroup>
-              <Label check >
-                <AvInput type="checkbox" name="favourite" onChange={this.handleFavourite} value={this.state.pokemon.favourite}/>
-                Mark as favourite
-              </Label>
-              <br /><br />
-            </AvGroup>
-              <FormGroup>
-                <Row>
-                  <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
-                  <Col sm={2}>
-                    <Button color="primary" disabled={this.state.loading}>Save data</Button>
-                  </Col>
-                </Row>
-              </FormGroup>
-          </AvForm>
-        </CardBody>
-      </Card>
+          </FormGroup>
+      </AvForm>
     )
   }
 
   render(): JSX.Element {
     const content = this.state.loading
       ? <p><em>Loading...</em></p>
-      : this.renderPokemonFields()
+      : this.renderForm()
     const modal = this.renderModal()
     return (
       <div>
         {modal}
-        {content}
-        <br/><br/>
+        <Card>
+          <CardImg top width="100%" src="/images/pokeball_detail_card.png" alt="Card image cap" />
+          <CardBody>
+            {content}
+          </CardBody>
+          <br/><br/>
+        </Card>
       </div>
     )
   }

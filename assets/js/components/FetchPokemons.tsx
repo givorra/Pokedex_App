@@ -145,7 +145,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     )
   }
 
-  private renderFilters() {
+  private renderCardHeader() {
     return (
     <CardHeader>
       <Row>
@@ -153,7 +153,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
           <Label for="pokemonFilterName">Filter by name</Label>
           <Input type="text" name="filterName" id="pokemonFilterName"
             value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-        </Col>{' '}
+        </Col>
         <Col>
             <Button color="primary" className="float-right" onClick={this.handleNewPokemon}><h1>+</h1></Button>
         </Col>
@@ -184,7 +184,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
       ? <p><em>Loading...</em></p>
       : this.renderPokemonItems()
 
-    const filters = this.renderFilters()
+    const cardHeader = this.renderCardHeader()
     const modal = this.renderModal()
 
     return (
@@ -192,7 +192,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
         {modal}
         <Card >
           <CardImg top width="100%" src="/images/my_pokedex_logo.png" alt="Card image cap"/>
-            {filters}
+            {cardHeader}
           <CardBody>
             <Label check>
               <Input type="checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange}/>
