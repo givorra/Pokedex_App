@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle, CardHeader,
   Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label, Header, Row,
   Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import Pokemon from '../interfaces/IPokemon'
+import IPokemon from '../interfaces/IPokemon'
 
 const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnDelete: true,
   hiddenBtnOk: true, hiddenBtnCancel: true, idPokemonSelected: 0}
@@ -11,7 +11,7 @@ const titleDeletePokemon = "Delete Pokemon"
 const bodyDeletePokemon = "¿Are you sure you want to delete this pokemon?"
 // The interface for our API response
 interface ApiResponse {
-  data: Pokemon[]
+  data: IPokemon[]
 }
 
 interface IModal {
@@ -25,8 +25,8 @@ interface IModal {
 }
 
 interface FetchPokemonsState {
-  pokemons: Pokemon[]
-  pokemons2show: Pokemon[]
+  pokemons: IPokemon[]
+  pokemons2show: IPokemon[]
   loading: boolean
   name_filter: string
   favourite_filter: boolean
@@ -125,6 +125,7 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     return (
       <CardDeck>
       {this.state.pokemons2show.map((pokemon, index) =>
+        /*
         <div className="w-50 p-3" key={pokemon.id}>
           <Card key={pokemon.id} outline color="primary">
             <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
@@ -139,6 +140,10 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
             </CardBody>
           </Card>
         </div>
+        */
+        <PokemonCard pokemon={pokemon} key={pokemon.id}
+          handlerDelete={this.handleDeletePokemonClick.bind(this, pokemon.id)}
+          handlerView={this.handlePokemonClick.bind(this, pokemon.id)}/>
         )
       }
       </CardDeck>
@@ -200,6 +205,33 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
             </Label>
             {content}
             <br /><br />
+          </CardBody>
+        </Card>
+      </div>
+    )
+  }
+}
+
+class mainCard extends React.Component<any, {}> {
+  render() {
+
+  }
+}
+
+class PokemonCard extends React.Component<any, {}> {
+  render() {
+    return (
+      <div className="w-50 p-3">
+        <Card outline color="primary">
+          <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
+          <CardBody>
+            <CardTitle>{this.props.pokemon.name}</CardTitle>
+            <CardText>{this.props.pokemon.description}</CardText>
+            <ButtonGroup  className="w-100">
+              <Button color="danger" className="w-50" onClick={this.props.handlerDelete}>Delete</Button>
+              <Col sm={2} />
+              <Button color="primary" className="w-50" onClick={this.props.handlerView}>View</Button>
+            </ButtonGroup>
           </CardBody>
         </Card>
       </div>

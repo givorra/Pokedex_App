@@ -1,5 +1,5 @@
 // The interface for our pokemon model.
-export default interface Pokemon {
+export default interface IPokemon {
   id: number
   name: string
   description: string

@@ -3,7 +3,7 @@ import { Table, Button, ButtonGroup, Col, Row, Label, Modal, ModalHeader, ModalB
   ModalFooter, FormGroup, Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle }
   from 'reactstrap'
 import { AvForm, AvField, AvInput, AvGroup } from 'availity-reactstrap-validation'
-import Pokemon from '../interfaces/IPokemon'
+import IPokemon from '../interfaces/IPokemon'
 
 const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnSave: true,
   hiddenBtnOk: true, hiddenBtnCancel: true}
@@ -31,7 +31,7 @@ interface IErrors {
 }
 
 interface IPokemonsDetailState {
-  pokemon: Pokemon
+  pokemon: IPokemon
   loading: boolean
   mode: Mode
   errors: IErrors
