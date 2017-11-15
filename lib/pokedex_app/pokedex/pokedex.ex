@@ -26,6 +26,13 @@ defmodule PokedexApp.Pokedex do
   end
 
   @doc """
+  Return the number of favourite pokemons
+  """
+  def count_favourites() do
+    Repo.one(from p in "pokemons", select: count("*"), where: p.favourite == true)
+  end
+
+  @doc """
   Gets a single pokemon.
 
   Raises `Ecto.NoResultsError` if the Pokemon does not exist.

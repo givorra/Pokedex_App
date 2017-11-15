@@ -6,7 +6,7 @@ defmodule PokedexApp.Pokedex.Pokemon do
   schema "pokemons" do
     field :description, :string, default: ""
     field :evolution_to, :string, default: ""
-    field :favourite, :boolean, default: ""
+    field :favourite, :boolean, default: false
     field :name, :string, default: ""
     field :type1, :string, default: ""
     field :type2, :string, default: ""
