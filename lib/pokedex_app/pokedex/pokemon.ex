@@ -27,7 +27,8 @@ defmodule PokedexApp.Pokedex.Pokemon do
   end
 
   def validate_add_favourite(changeset) do
-    if not get_field(changeset, :favourite) or Pokedex.can_add_favourites() do
+    favourite = get_field(changeset, :favourite)
+    if favourite == nil or not favourite or Pokedex.can_add_favourites() do
       changeset
     else
       add_error(changeset, :favourite,

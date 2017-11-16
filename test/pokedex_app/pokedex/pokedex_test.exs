@@ -26,7 +26,7 @@ defmodule PokedexApp.PokedexTest do
 
     test "list_pokemons/0 returns all pokemons" do
       pokemon = pokemon_fixture()
-      assert Pokedex.list_pokemons() == [pokemon]
+      assert Pokedex.list_pokemons(%{}) == [pokemon]
     end
 
     test "get_pokemon!/1 returns the pokemon with given id" do
@@ -36,7 +36,7 @@ defmodule PokedexApp.PokedexTest do
 
     test "create_pokemon/1 with valid data creates a pokemon" do
       assert {:ok, %Pokemon{} = pokemon} = Pokedex.create_pokemon(@valid_attrs)
-      assert pokemon.description == "some description"
+      assert pokemon.description == "some description some description"
       assert pokemon.evolution_to == "some evolution_to"
       assert pokemon.favourite == true
       assert pokemon.name == "some name"
@@ -52,7 +52,7 @@ defmodule PokedexApp.PokedexTest do
       pokemon = pokemon_fixture()
       assert {:ok, pokemon} = Pokedex.update_pokemon(pokemon, @update_attrs)
       assert %Pokemon{} = pokemon
-      assert pokemon.description == "some updated description"
+      assert pokemon.description == "some description some description"
       assert pokemon.evolution_to == "some updated evolution_to"
       assert pokemon.favourite == false
       assert pokemon.name == "some updated name"

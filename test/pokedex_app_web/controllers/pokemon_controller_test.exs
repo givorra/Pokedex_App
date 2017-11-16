@@ -4,9 +4,9 @@ defmodule PokedexAppWeb.PokemonControllerTest do
   alias PokedexApp.Pokedex
   alias PokedexApp.Pokedex.Pokemon
 
-  @create_attrs %{description: "some description", evolution_to: "some evolution_to", favourite: true, name: "some name", tipe1: "some tipe1", tipe2: "some tipe2"}
-  @update_attrs %{description: "some updated description", evolution_to: "some updated evolution_to", favourite: false, name: "some updated name", tipe1: "some updated tipe1", tipe2: "some updated tipe2"}
-  @invalid_attrs %{description: nil, evolution_to: nil, favourite: nil, name: nil, tipe1: nil, tipe2: nil}
+  @create_attrs %{description: "some description some description", evolution_to: "some evolution_to", favourite: false, name: "some name", type1: "some type1", type2: "some type2"}
+  @update_attrs %{description: "some updated description some description", evolution_to: "some updated evolution_to", favourite: false, name: "some updated name", type1: "some updated type1", type2: "some updated type2"}
+  @invalid_attrs %{description: nil, evolution_to: nil, favourite: nil, name: nil, type1: nil, type2: nil}
 
   def fixture(:pokemon) do
     {:ok, pokemon} = Pokedex.create_pokemon(@create_attrs)
@@ -32,12 +32,12 @@ defmodule PokedexAppWeb.PokemonControllerTest do
       conn = get conn, pokemon_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "description" => "some description",
+        "description" => "some description some description",
         "evolution_to" => "some evolution_to",
-        "favourite" => true,
+        "favourite" => false,
         "name" => "some name",
-        "tipe1" => "some tipe1",
-        "tipe2" => "some tipe2"}
+        "type1" => "some type1",
+        "type2" => "some type2"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -56,12 +56,12 @@ defmodule PokedexAppWeb.PokemonControllerTest do
       conn = get conn, pokemon_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "description" => "some updated description",
+        "description" => "some updated description some description",
         "evolution_to" => "some updated evolution_to",
         "favourite" => false,
         "name" => "some updated name",
-        "tipe1" => "some updated tipe1",
-        "tipe2" => "some updated tipe2"}
+        "type1" => "some updated type1",
+        "type2" => "some updated type2"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, pokemon: pokemon} do
