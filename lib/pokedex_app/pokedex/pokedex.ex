@@ -32,6 +32,9 @@ defmodule PokedexApp.Pokedex do
     Repo.one(from p in "pokemons", select: count("*"), where: p.favourite == true)
   end
 
+  def can_add_favourites(), do: count_favourites() < max_favourites()
+  def max_favourites(), do: 10
+
   @doc """
   Gets a single pokemon.
 
@@ -47,6 +50,7 @@ defmodule PokedexApp.Pokedex do
 
   """
   def get_pokemon!(id), do: Repo.get!(Pokemon, id)
+  def get_pokemon(id), do: Repo.get(Pokemon, id)
 
   def get_pokemon_by(params), do: Repo.get_by!(Pokemon, params)
   @doc """

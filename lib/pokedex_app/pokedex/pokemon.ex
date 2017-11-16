@@ -2,6 +2,7 @@ defmodule PokedexApp.Pokedex.Pokemon do
   use Ecto.Schema
   import Ecto.Changeset
   alias PokedexApp.Pokedex.Pokemon
+  alias PokedexApp.Pokedex
 
   schema "pokemons" do
     field :description, :string, default: ""
@@ -22,5 +23,17 @@ defmodule PokedexApp.Pokedex.Pokemon do
     |> validate_length(:name, min: 4)
     |> validate_length(:name, max: 24)
     |> validate_length(:description, min: 30)
+    |> validate_add_favourite
   end
+
+  def validate_add_favourite(changeset) do
+    if not get_field(changeset, :favourite) or Pokedex.can_add_favourites() do
+      changeset
+    else
+      add_error(changeset, :favourite,
+        "there are already " <> to_string(Pokedex.max_favourites()) <>
+        " pokemons as favorites, there's no more")
+    end
+  end
+
 end
