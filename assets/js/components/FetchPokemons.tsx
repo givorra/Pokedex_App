@@ -31,6 +31,7 @@ interface FetchPokemonsState {
   name_filter: string
   favourite_filter: boolean
   modal: IModal
+  //idPokemonClicked: number
 }
 
 export default class FetchPokemons extends React.Component<any, FetchPokemonsState> {
@@ -43,6 +44,8 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     this.handleNewPokemon = this.handleNewPokemon.bind(this)
     this.handleModalClose = this.handleModalClose.bind(this)
     this.handleModalDelete = this.handleModalDelete.bind(this)
+    this.handleDeletePokemonClick = this.handleDeletePokemonClick.bind(this)
+    this.handlePokemonClick = this.handlePokemonClick.bind(this)
   }
 
   componentWillMount() {
@@ -78,22 +81,22 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
     this.applyFilters(this.state.pokemons, this.state.name_filter, event.target.checked)
   }
 
-  private handlePokemonClick(id, event) {
-    this.props.history.push('/pokemon-detail/' + id)
+  private handlePokemonClick(idPokemon) {
+    this.props.history.push('/pokemon-detail/' + idPokemon)
   }
 
-  private handleNewPokemon(event) {
+  private handleNewPokemon() {
     this.props.history.push('/create-pokemon')
   }
 
-  private handleDeletePokemonClick(id, event) {
+  private handleDeletePokemonClick(idPokemon) {
     let modal = Object.assign({}, modalDefault);
     modal.isOpen = true
     modal.title = titleDeletePokemon
     modal.body = bodyDeletePokemon
     modal.hiddenBtnDelete = false
     modal.hiddenBtnCancel = false
-    modal.idPokemonSelected = id
+    modal.idPokemonSelected = idPokemon
     this.setState({modal: modal})
   }
 
@@ -121,90 +124,74 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
       })
   }
 
-  private renderPokemonItems() {
+  public render(): JSX.Element {
+    /*
+    const content = this.state.loading
+      ? <p><em>Loading...</em></p>
+      : this.renderPokemonItems()
+    const cardHeader = this.renderCardHeader()
+    const modal = this.renderModal()
+*/
     return (
-      <CardDeck>
-      {this.state.pokemons2show.map((pokemon, index) =>
-        /*
-        <div className="w-50 p-3" key={pokemon.id}>
-          <Card key={pokemon.id} outline color="primary">
-            <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
-            <CardBody>
-              <CardTitle>{pokemon.name}</CardTitle>
-              <CardText>{pokemon.description}</CardText>
-              <ButtonGroup  className="w-100">
-                <Button color="danger" className="w-50" onClick={this.handleDeletePokemonClick.bind(this, pokemon.id)}>Delete</Button>
-                <Col sm={2} />
-                <Button color="primary" className="w-50" onClick={this.handlePokemonClick.bind(this, pokemon.id)}>View</Button>
-              </ButtonGroup>
-            </CardBody>
-          </Card>
-        </div>
-        */
-        <PokemonCard pokemon={pokemon} key={pokemon.id}
-          handlerDelete={this.handleDeletePokemonClick.bind(this, pokemon.id)}
-          handlerView={this.handlePokemonClick.bind(this, pokemon.id)}/>
-        )
-      }
-      </CardDeck>
+      <MainCard modalIsOpen={this.state.modal.isOpen} modalTitle={this.state.modal.title}
+        modalBody={this.state.modal.body} modalBtnCancelHidden={this.state.modal.hiddenBtnCancel}
+        modalBtnCancelClick={this.handleModalClose} modalBtnOkHidden={this.state.modal.hiddenBtnOk}
+        modalBtnOkClick={this.handleModalClose} modalBtnDeleteHidden={this.state.modal.hiddenBtnDelete}
+        modalBtnDeleteClick={this.handleModalDelete} nameFilterValue={this.state.name_filter}
+        nameFilterOnChange={this.handleNameFilterChange} handleNewPokemon={this.handleNewPokemon}
+        favouriteFilterValue={this.state.favourite_filter} favouriteFilterOnChange={this.handleFavouriteFilterChange}
+        pokemons2show={this.state.pokemons2show} handlePokemonDelete={this.handleDeletePokemonClick}
+        handlePokemonView={this.handlePokemonClick} /*idPokemonClicked={this.state.idPokemonClicked}*//>
     )
   }
+}
 
-  private renderCardHeader() {
+class ModalMain extends React.Component<any, {}> {
+  render() {
     return (
-    <CardHeader>
-      <Row>
-        <Col>
-          <Label for="pokemonFilterName">Filter by name</Label>
-          <Input type="text" name="filterName" id="pokemonFilterName"
-            value={this.state.name_filter} onChange={this.handleNameFilterChange} />
-        </Col>
-        <Col>
-            <Button color="primary" className="float-right" onClick={this.handleNewPokemon}><h1>+</h1></Button>
-        </Col>
-      </Row>
-    </CardHeader>
-    )
-  }
-
-  private renderModal() {
-    return (
-      <Modal isOpen={this.state.modal.isOpen} >
-        <ModalHeader>{this.state.modal.title}</ModalHeader>
-        <ModalBody>{this.state.modal.body}</ModalBody>
+      <Modal isOpen={this.props.modalIsOpen} >
+        <ModalHeader>{this.props.modalTitle}</ModalHeader>
+        <ModalBody>{this.props.modalBody}</ModalBody>
         <ModalFooter>
-          <Button color="secondary" hidden={this.state.modal.hiddenBtnCancel}
-            onClick={this.handleModalClose}>Cancel</Button>
-          <Button color="primary" hidden={this.state.modal.hiddenBtnOk}
-            onClick={this.handleModalClose}>Ok</Button>
-          <Button color="primary" hidden={this.state.modal.hiddenBtnDelete}
-            onClick={this.handleModalDelete}>Delete</Button>
+          <Button color="secondary" hidden={this.props.modalBtnCancelHidden}
+            onClick={this.props.modalBtnCancelClick}>Cancel</Button>
+          <Button color="primary" hidden={this.props.modalBtnOkHidden}
+            onClick={this.props.modalBtnOkClick}>Ok</Button>
+          <Button color="primary" hidden={this.props.modalBtnDeleteHidden}
+            onClick={this.props.modalBtnDeleteClick}>Deletee</Button>
         </ModalFooter>
       </Modal>
     )
   }
+}
 
-  public render(): JSX.Element {
-    const content = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : this.renderPokemonItems()
-
-    const cardHeader = this.renderCardHeader()
-    const modal = this.renderModal()
-
+class MainCard extends React.Component<any, {}> {
+  private getModal() {
+    return (
+      <ModalMain modalIsOpen={this.props.modalIsOpen} modalTitle={this.props.modalTitle}
+        modalBody={this.props.modalBody} modalBtnCancelHidden={this.props.modalBtnCancelHidden}
+        modalBtnCancelClick={this.props.modalBtnCancelClick} modalBtnOkHidden={this.props.modalBtnOkHidden}
+        modalBtnOkClick={this.props.modalBtnOkClick} modalBtnDeleteHidden={this.props.modalBtnDeleteHidden}
+        modalBtnDeleteClick={this.props.modalBtnDeleteClick}/>)
+  }
+  render() {
+    const modal = this.props.modalIsOpen
+      ? this.getModal()
+      : ""
     return (
       <div>
-        {modal}
         <Card >
           <CardImg top width="100%" src="/images/my_pokedex_logo.png" alt="Card image cap"/>
-            {cardHeader}
+          <HeaderMainCard nameFilterValue={this.props.nameFilterValue}
+            nameFilterOnChange={this.props.nameFilterOnChange} handleNewPokemon={this.props.handleNewPokemon}/>
           <CardBody>
             <Label check>
-              <Input type="checkbox" checked={this.state.favourite_filter} onChange={this.handleFavouriteFilterChange}/>
+              <Input type="checkbox" checked={this.props.favouriteFilterValue} onChange={this.props.favouriteFilterOnChange}/>
               Show only favourites
             </Label>
-            {content}
-            <br /><br />
+            <PokemonDeck handlePokemonView={this.props.handlePokemonView} handlePokemonDelete={this.props.handlePokemonDelete}
+             pokemons2show={this.props.pokemons2show} /*idPokemonClicked={this.props.idPokemonClicked}*//>
+           <br /><br />
           </CardBody>
         </Card>
       </div>
@@ -212,25 +199,65 @@ export default class FetchPokemons extends React.Component<any, FetchPokemonsSta
   }
 }
 
-class mainCard extends React.Component<any, {}> {
+class HeaderMainCard extends React.Component<any, {}> {
   render() {
+    return (
+      <CardHeader>
+        <Row>
+          <Col>
+            <Label for="pokemonFilterName">Filter by name</Label>
+            <Input type="text" name="filterName" id="pokemonFilterName"
+              value={this.props.nameFilterValue} onChange={this.props.nameFilterOnChange} />
+          </Col>
+          <Col>
+              <Button color="primary" className="float-right" onClick={this.props.handleNewPokemon}><h1>+</h1></Button>
+          </Col>
+        </Row>
+      </CardHeader>
+    )
+  }
+}
 
+class PokemonDeck extends React.Component<any, {}> {
+  render() {
+    return (
+      <CardDeck>
+        {this.props.pokemons2show.map((pokemon, index) =>
+          <PokemonCard pokemon={pokemon} key={pokemon.id}
+            handlePokemonDelete={this.props.handlePokemonDelete}
+            handlePokemonView={this.props.handlePokemonView}
+            /*idPokemonClicked={this.props.idPokemonClicked}*/ />
+          )
+        }
+      </CardDeck>
+    )
   }
 }
 
 class PokemonCard extends React.Component<any, {}> {
+  private pcHandlePokemonDelete(pokemonId) {
+    //this.props.idPokemonClicked = pokemonId
+    this.props.handlePokemonDelete(pokemonId)
+  }
+
+  private pcHandlePokemonView(pokemonId) {
+    //this.props.idPokemonClicked = pokemonId
+    this.props.handlePokemonView(pokemonId)
+  }
+
   render() {
+    const pokemon = this.props.pokemon
     return (
       <div className="w-50 p-3">
         <Card outline color="primary">
           <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
           <CardBody>
-            <CardTitle>{this.props.pokemon.name}</CardTitle>
-            <CardText>{this.props.pokemon.description}</CardText>
+            <CardTitle>{pokemon.name}</CardTitle>
+            <CardText>{pokemon.description}</CardText>
             <ButtonGroup  className="w-100">
-              <Button color="danger" className="w-50" onClick={this.props.handlerDelete}>Delete</Button>
+              <Button color="danger" className="w-50" >Delete</Button>
               <Col sm={2} />
-              <Button color="primary" className="w-50" onClick={this.props.handlerView}>View</Button>
+              <Button color="primary" className="w-50" >View</Button>
             </ButtonGroup>
           </CardBody>
         </Card>
