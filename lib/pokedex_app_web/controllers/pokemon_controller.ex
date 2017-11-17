@@ -21,7 +21,7 @@ defmodule PokedexAppWeb.PokemonController do
   end
 
   def show(conn, %{"id" => id}) do
-    pokemon = Pokedex.get_pokemon!(id)
+    pokemon = Pokedex.get_pokemon(id)
     render(conn, "show.json", pokemon: pokemon)
   end
 

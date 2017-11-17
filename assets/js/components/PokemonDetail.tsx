@@ -83,7 +83,10 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       fetch('/api/pokemons/' + this.state.pokemon.id)
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ pokemon: data.data, loading: false })
+          if (data.data == null)
+            this.props.history.replace('/create-pokemon')
+          else
+            this.setState({ pokemon: data.data, loading: false })
         })
     }
   }
