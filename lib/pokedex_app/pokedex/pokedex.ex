@@ -33,7 +33,7 @@ defmodule PokedexApp.Pokedex do
   end
 
   def can_add_favourites(), do: count_favourites() < max_favourites()
-  def max_favourites(), do: 10
+  def max_favourites(), do: 1
 
   @doc """
   Gets a single pokemon.

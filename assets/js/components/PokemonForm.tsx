@@ -8,7 +8,6 @@ interface PokemonFormState {
 }
 
 export default class PokemonForm extends React.Component<any, PokemonFormState> {
-
   constructor(props) {
     super(props)
     let initialState: PokemonFormState = {
@@ -77,8 +76,9 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
     let pokemon = this.state.pokemon;
     return (
       <AvForm onValidSubmit={() => this.props.onSubmit(this.state.pokemon)}>
-        <AvField name="name" label="Name" required onChange={(event) => this.handleName(event)} value={this.state.pokemon.name}
-          minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
+        <AvField name="name" label="Name" required onChange={(event) => this.handleName(event)}
+          value={this.state.pokemon.name} minLength="4" maxLength="24"
+          helpMessage="  (*) Between 4 - 24 characters"/>
         <Row>
           <Col>
             <Label>Type/s</Label>
@@ -86,19 +86,24 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
         </Row>
         <Row>
           <Col>
-            <AvField name="type1"  required onChange={(event) => this.handleType1(event)} value={this.state.pokemon.type1}
-              helpMessage="  (*)"/>
-            </Col>
-            <Col>
-              <AvField name="type2" label="" onChange={(event) => this.handleType2(event)} value={this.state.pokemon.type2} />
-            </Col>
+            <AvField name="type1"  required onChange={(event) => this.handleType1(event)}
+              value={this.state.pokemon.type1} helpMessage="  (*)"/>
+          </Col>
+          <Col>
+            <AvField name="type2" label="" onChange={(event) => this.handleType2(event)}
+              value={this.state.pokemon.type2} />
+          </Col>
         </Row>
-        <AvField name="evolution_to" label="Evolution to" onChange={(event) => this.handleEvolutionTo(event)} value={this.state.pokemon.evolution_to} />
-        <AvField type="textarea" name="description" label="Description" onChange={(event) => this.handleDescription(event)}
-          required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
+        <AvField name="evolution_to" label="Evolution to" onChange={(event) => this.handleEvolutionTo(event)}
+          value={this.state.pokemon.evolution_to} />
+        <AvField type="textarea" name="description" label="Description"
+          onChange={(event) => this.handleDescription(event)}
+          required helpMessage="  (*) Min. 30 characters" minLength="30"
+          value={this.state.pokemon.description} />
         <AvGroup>
           <Label check >
-            <AvInput type="checkbox" name="favourite" onChange={(event) => this.handleFavourite(event)} checked={this.state.pokemon.favourite}/>
+            <AvInput type="checkbox" name="favourite" onChange={(event) => this.handleFavourite(event)}
+              checked={this.state.pokemon.favourite}/>
             Mark as favourite
           </Label>
           <br />

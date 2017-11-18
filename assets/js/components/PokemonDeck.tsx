@@ -8,8 +8,8 @@ export default class PokemonDeck extends React.Component<any, {}> {
       <CardDeck>
         {this.props.pokemons2show.map((pokemon, index) =>
             <PokemonCard pokemon={pokemon} key={pokemon.id}
-              handlePokemonDelete={this.props.handlePokemonDelete}
-              handlePokemonView={this.props.handlePokemonView}
+              handlePokemonDelete={(idPokemon) => this.props.handlePokemonDelete(idPokemon)}
+              handlePokemonView={(idPokemon) => this.props.handlePokemonView(idPokemon)}
             />
           )
         }

@@ -135,12 +135,12 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
   public render(): JSX.Element {
     return (
       <div>
-        <PokemonDetailModal modal={this.state.modal} setDefaultModal={this.setDefaultModal.bind(this)}
-          goBack={this.handleGoBack.bind(this)} persistData={this.persistData.bind(this)}/>
+        <PokemonDetailModal modal={this.state.modal} setDefaultModal={() => this.setDefaultModal()}
+          goBack={() => this.handleGoBack()} persistData={() => this.persistData()}/>
         <Card>
           <CardImg top src="/images/pokeball_detail_card.png" alt="Card image cap" />
           <CardBody>
-            <PokemonForm pokemon={this.state.pokemon} onBack={this.handleGoBack.bind(this)} onSubmit={(pokemon) => this.handleSaveData(pokemon)} />
+            <PokemonForm pokemon={this.state.pokemon} onBack={() => this.handleGoBack()} onSubmit={(pokemon) => this.handleSaveData(pokemon)} />
           </CardBody>
           <br/>
         </Card>
