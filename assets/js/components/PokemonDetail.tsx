@@ -5,20 +5,12 @@ import { Table, Button, ButtonGroup, Col, Row, Label, Modal, ModalHeader, ModalB
 
 import IPokemon from '../interfaces/IPokemon'
 import PokemonForm from './PokemonForm'
+import { PokemonDetailModal, PokemonDetailModalState, pokemonDetailModalDefault } from './PokemonDetailModal'
 
-const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnSave: true,
-  hiddenBtnOk: true, hiddenBtnCancel: true}
+
 const titleSavePokemon = "Save Pokemon"
 const bodySavePokemon = "¿Are you sure you want to save data?"
 
-interface IModal {
-  isOpen: boolean
-  title: string
-  body: string
-  hiddenBtnSave: boolean
-  hiddenBtnOk: boolean
-  hiddenBtnCancel: boolean
-}
 
 enum Mode {
     POST = 0,
@@ -36,15 +28,12 @@ interface IPokemonsDetailState {
   loading: boolean
   mode: Mode
   errors: IErrors
-  modal: IModal
+  modal: PokemonDetailModalState
 }
 
 export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
-  constructor(props: number) {
+  constructor(props) {
       super(props)
-      this.handleModal = this.handleModalClose.bind(this);
-      this.handleModalClose = this.handleModalClose.bind(this);
-      this.handleModalSave = this.handleModalSave.bind(this);
 
       if(this.props.match.url.match("pokemon-detail"))
         var mode = Mode.PUT
@@ -64,7 +53,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
         loading: false,
         mode: mode,
         errors: { name: "", type1: "", description: ""},
-        modal: modalDefault
+        modal: pokemonDetailModalDefault
       }
       this.state = initialState
   }
@@ -83,7 +72,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
   }
 
   private persistData() {
-    let modal = Object.assign({}, modalDefault);
+    let modal = Object.assign({}, pokemonDetailModalDefault);
     modal.title = titleSavePokemon
     modal.isOpen = true
     modal.hiddenBtnOk = false
@@ -130,7 +119,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
   }
 
   private handleSaveData(pokemon: IPokemon) {
-    let modal = Object.assign({}, modalDefault);
+    let modal = Object.assign({}, pokemonDetailModalDefault);
     modal.isOpen = true
     modal.title = titleSavePokemon
     modal.body = bodySavePokemon
@@ -144,78 +133,16 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     this.props.history.push('/')
   }
 
-  private handleModalClose() {
-    this.setState({modal: modalDefault})
+  private setDefaultModal() {
+    this.setState({modal: pokemonDetailModalDefault})
   }
 
-  private handleModalSave() {
-    this.persistData()
-  }
-
-  private renderModal() {
-    return (
-      <Modal isOpen={this.state.modal.isOpen} >
-        <ModalHeader>{this.state.modal.title}</ModalHeader>
-        <ModalBody>{this.state.modal.body}</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" hidden={this.state.modal.hiddenBtnCancel}
-            onClick={this.handleModalClose}>Cancel</Button>
-          <Button color="primary" hidden={this.state.modal.hiddenBtnOk}
-            onClick={this.handleGoBack.bind(this)}>Ok</Button>
-          <Button color="primary" hidden={this.state.modal.hiddenBtnSave}
-            onClick={this.handleModalSave}>Save</Button>
-        </ModalFooter>
-      </Modal>
-    )
-  }
-/*
-  private renderForm() {
-    return (
-      <AvForm onValidSubmit={this.handleSaveData}>
-        <AvField name="name" label="Name" required onChange={this.handleName} value={this.state.pokemon.name}
-          minLength="4" maxLength="24" helpMessage="  (*) Between 4 - 24 characters"/>
-        <Row>
-          <Col>
-            <Label>Type/s</Label>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <AvField name="type1"  required onChange={this.handleType1} value={this.state.pokemon.type1}
-              helpMessage="  (*)"/>
-            </Col>
-            <Col>
-              <AvField name="type2" label="" onChange={this.handleType2} value={this.state.pokemon.type2} />
-            </Col>
-        </Row>
-        <AvField name="evolution_to" label="Evolution to" onChange={this.handleEvolutionTo} value={this.state.pokemon.evolution_to} />
-        <AvField type="textarea" name="description" label="Description" onChange={this.handleDescription}
-          required helpMessage="  (*) Min. 30 characters" minLength="30" value={this.state.pokemon.description} />
-        <AvGroup>
-          <Label check >
-            <AvInput type="checkbox" name="favourite" onChange={this.handleFavourite} value={this.state.pokemon.favourite}/>
-            Mark as favourite
-          </Label>
-          <br /><br />
-        </AvGroup>
-          <FormGroup>
-            <Row>
-              <Button color="secondary" disabled={this.state.loading} onClick={this.handleGoBack}>Go Back</Button>
-              <Col sm={2}>
-                <Button color="primary" disabled={this.state.loading}>Save data</Button>
-              </Col>
-            </Row>
-          </FormGroup>
-      </AvForm>
-    )
-  }
-*/
-  render(): JSX.Element {
-    const modal = this.renderModal()
+  public render(): JSX.Element {
     //console.log(this.state.pokemon)
     return (
       <div>
-        {modal}
+        <PokemonDetailModal modal={this.state.modal} setDefaultModal={this.setDefaultModal.bind(this)}
+          goBack={this.handleGoBack.bind(this)} persistData={this.persistData.bind(this)}/>
         <Card>
           <CardImg top width="100%" src="/images/pokeball_detail_card.png" alt="Card image cap" />
           <CardBody>
