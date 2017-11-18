@@ -25,11 +25,12 @@ defmodule PokedexApp.Pokedex.Pokemon do
     |> validate_length(:description, min: 30)
     |> validate_add_favourite
   end
-
+  
   def validate_add_favourite(changeset) do
     favourite = get_field(changeset, :favourite)
-    if favourite == nil or not favourite or Pokedex.can_add_favourites() do
-      changeset
+    id = get_field(changeset, :id)
+    if not (id == nil) or favourite == nil or not favourite or Pokedex.can_add_favourites() do
+        changeset
     else
       add_error(changeset, :favourite,
         "there are already " <> to_string(Pokedex.max_favourites()) <>

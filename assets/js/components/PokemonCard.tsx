@@ -36,19 +36,11 @@ export default class PokemonCard extends React.Component<any, IPokemonCardState>
       this.setState({pokemon: nextProps.pokemon})
     }
   }
-/*
-  private pcHandlePokemonDelete(pokemonId) {
-    this.props.handlePokemonDelete(pokemonId)
-  }
 
-  private pcHandlePokemonView(pokemonId) {
-    this.props.handlePokemonView(pokemonId)
-  }
-*/
   render() {
     const pokemon = this.props.pokemon
     return (
-      <div className="col-lg-6 p-3">
+      <div className="col-sm-6 p-3">
         <Card outline color="primary">
           <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
           <CardBody>

@@ -1,15 +1,3 @@
-# Pokedex+App
-
-> A sample Phoenix+React project that *actually works*.
-
-This repo is originally made as a supplement to [this guide](https://resir014.github.io/blog/2017/08/09/a-phoenix-react-initial-setup-that-actually-works/). Feel free to use this as a base for your Phoenix+React project, however, everything would make sense if you read the original guide first, so probably go do that first. Don't worry, I'll wait.
-
-The commit logs outline steps taken on the aforementioned guide, to make it easier to follow.
-
-## What's in the ~~box~~ repo
-
-This repo contains a [Phoenix](http://www.phoenixframework.org/) app hooked up to a React frontend, which includes a basic example of your typical React app.
-
 ## The stack
 
 * Elixir (^1.5.0)
@@ -32,15 +20,3 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check out the deployment guides provided by Phoenix](http://www.phoenixframework.org/docs/deployment).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
-
----
-
-Have fun! Feel free to [tweet at me](https://twitter.com/resir014) if you have any questions.
