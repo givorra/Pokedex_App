@@ -1,34 +1,22 @@
 import * as React from 'react'
-import { Table, Button, ButtonGroup, Col, Row, Label, Modal, ModalHeader, ModalBody,
-  ModalFooter, FormGroup, Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle }
-  from 'reactstrap'
-
+import { Card, CardImg, CardBody } from 'reactstrap'
 import IPokemon from '../interfaces/IPokemon'
 import PokemonForm from './PokemonForm'
-import { PokemonDetailModal, PokemonDetailModalState, pokemonDetailModalDefault } from './PokemonDetailModal'
-
+import { PokemonDetailModal, IPokemonDetailModalState, pokemonDetailModalDefault } from './PokemonDetailModal'
 
 const titleSavePokemon = "Save Pokemon"
 const bodySavePokemon = "¿Are you sure you want to save data?"
 
-
 enum Mode {
-    POST = 0,
-    PUT = 1,
-}
-
-interface IErrors {
-  name: string
-  type1: string
-  description: string
+    POST = "POST",
+    PUT = "PUT"
 }
 
 interface IPokemonsDetailState {
   pokemon: IPokemon
   loading: boolean
   mode: Mode
-  errors: IErrors
-  modal: PokemonDetailModalState
+  modal: IPokemonDetailModalState
 }
 
 export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
@@ -37,7 +25,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
 
       if(this.props.match.url.match("pokemon-detail"))
         var mode = Mode.PUT
-      else
+      else // Cualquier acceso que no sea al deteal
         var mode = Mode.POST
 
       var initialState: IPokemonsDetailState = {
@@ -52,7 +40,6 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           },
         loading: false,
         mode: mode,
-        errors: { name: "", type1: "", description: ""},
         modal: pokemonDetailModalDefault
       }
       this.state = initialState
@@ -71,30 +58,32 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     }
   }
 
+  private getApiResourceByMode() {
+    if(this.state.mode == Mode.PUT)
+    {
+      return "/api/pokemons/" + this.state.pokemon.id
+    }
+    else if(this.state.mode == Mode.POST)
+    {
+      return "/api/pokemons/"
+    }
+  }
+
   private persistData() {
     let modal = Object.assign({}, pokemonDetailModalDefault);
     modal.title = titleSavePokemon
     modal.isOpen = true
     modal.hiddenBtnOk = false
-
-    var route = '/api/pokemons'
-    if(this.state.mode == Mode.PUT)
-    {
-      var method = "PUT"
-      route = route + "/" + this.state.pokemon.id
-    }
-    else
-    {
-      var method = "POST"
-    }
+    const apiResource = this.getApiResourceByMode()
 
     const headers = new Headers()
-    //headers.append("Accept", "application/json")
     headers.append('Content-Type', 'application/json')
+    //headers.append("Accept", "application/json")
+
     let haveErrors = false
-    fetch(route,
+    fetch(apiResource,
       {
-        method: method,
+        method: this.state.mode,
         headers: headers,
         body: JSON.stringify({"pokemon": this.state.pokemon})
         })
@@ -113,9 +102,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     }).then((data) => {
       modal.body = "Success!"
       this.setState({modal: modal})
-    }).catch((data) => {
-
-    });
+    })
   }
 
   private handleSaveData(pokemon: IPokemon) {
@@ -138,13 +125,12 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
   }
 
   public render(): JSX.Element {
-    //console.log(this.state.pokemon)
     return (
       <div>
         <PokemonDetailModal modal={this.state.modal} setDefaultModal={this.setDefaultModal.bind(this)}
           goBack={this.handleGoBack.bind(this)} persistData={this.persistData.bind(this)}/>
         <Card>
-          <CardImg top width="100%" src="/images/pokeball_detail_card.png" alt="Card image cap" />
+          <CardImg top src="/images/pokeball_detail_card.png" alt="Card image cap" />
           <CardBody>
             <PokemonForm pokemon={this.state.pokemon} onBack={this.handleGoBack.bind(this)} onSubmit={(pokemon) => this.handleSaveData(pokemon)} />
           </CardBody>

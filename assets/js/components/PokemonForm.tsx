@@ -32,7 +32,6 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
   }
 
   componentWillReceiveProps(nextProps) {
-
     if(nextProps.pokemon) {
       this.setState({pokemon: nextProps.pokemon})
     }
@@ -102,16 +101,16 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
             <AvInput type="checkbox" name="favourite" onChange={(event) => this.handleFavourite(event)} checked={this.state.pokemon.favourite}/>
             Mark as favourite
           </Label>
-          <br /><br />
+          <br />
         </AvGroup>
-          <FormGroup>
-            <Row>
-              <Button color="secondary" onClick={() => this.props.onBack()}>Go Back</Button>
-              <Col sm={2}>
-                <Button color="primary">Save data</Button>
-              </Col>
-            </Row>
-          </FormGroup>
+        <FormGroup className="p-3">
+          <Row>
+            <Button color="secondary" onClick={() => this.props.onBack()}>Go Back</Button>
+            <Col lg={2}>
+              <Button color="primary">Save data</Button>
+            </Col>
+          </Row>
+        </FormGroup>
       </AvForm>
     )
   }

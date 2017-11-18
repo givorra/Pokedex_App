@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 
-export const pokemonDetailModalDefault: PokemonDetailModalState = { isOpen: false, title: "", body: "", hiddenBtnSave: true,
-  hiddenBtnOk: true, hiddenBtnCancel: true}
+export const pokemonDetailModalDefault: IPokemonDetailModalState = { isOpen: false,
+  title: "", body: "", hiddenBtnSave: true, hiddenBtnOk: true, hiddenBtnCancel: true}
 
-export interface PokemonDetailModalState {
+export interface IPokemonDetailModalState {
   isOpen: boolean
   title: string
   body: string
@@ -13,7 +13,7 @@ export interface PokemonDetailModalState {
   hiddenBtnCancel: boolean
 }
 
-export class PokemonDetailModal extends React.Component<any, PokemonDetailModalState> {
+export class PokemonDetailModal extends React.Component<any, IPokemonDetailModalState> {
   constructor(props) {
     super(props)
     this.state = pokemonDetailModalDefault
