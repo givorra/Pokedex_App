@@ -4,11 +4,15 @@ import { Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle, C
   Table, Button, Col, ButtonGroup, Form, FormGroup, Input, Label, Header, Row,
   Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import IPokemon from '../interfaces/IPokemon'
+import HeaderMainCard from './HeaderMainCard'
+import PokemonDeck from './PokemonDeck'
+import FetchPokemonsModal from './FetchPokemonsModal'
+
+const titleDeletePokemon = "Delete Pokemon"
+const bodyDeletePokemon = "¿Are you sure you want to delete this pokemon?"
 
 const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnDelete: true,
   hiddenBtnOk: true, hiddenBtnCancel: true, idPokemonSelected: 0}
-const titleDeletePokemon = "Delete Pokemon"
-const bodyDeletePokemon = "¿Are you sure you want to delete this pokemon?"
 // The interface for our API response
 interface ApiResponse {
   data: IPokemon[]
@@ -142,7 +146,7 @@ class MainCard extends React.Component<any, {}> {
   render() {
     return (
       <div>
-        <ModalMain modalIsOpen={this.props.modalIsOpen} modalTitle={this.props.modalTitle}
+        <FetchPokemonsModal modalIsOpen={this.props.modalIsOpen} modalTitle={this.props.modalTitle}
           modalBody={this.props.modalBody} modalBtnCancelHidden={this.props.modalBtnCancelHidden}
           modalBtnCancelClick={this.props.modalBtnCancelClick} modalBtnOkHidden={this.props.modalBtnOkHidden}
           modalBtnOkClick={this.props.modalBtnOkClick} modalBtnDeleteHidden={this.props.modalBtnDeleteHidden}
@@ -159,90 +163,6 @@ class MainCard extends React.Component<any, {}> {
             <PokemonDeck handlePokemonView={this.props.handlePokemonView} handlePokemonDelete={this.props.handlePokemonDelete}
              pokemons2show={this.props.pokemons2show} />
            <br /><br />
-          </CardBody>
-        </Card>
-      </div>
-    )
-  }
-}
-
-class ModalMain extends React.Component<any, {}> {
-  render() {
-    return (
-      <Modal isOpen={this.props.modalIsOpen} >
-        <ModalHeader>{this.props.modalTitle}</ModalHeader>
-        <ModalBody>{this.props.modalBody}</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" hidden={this.props.modalBtnCancelHidden}
-            onClick={this.props.modalBtnCancelClick}>Cancel</Button>
-          <Button color="primary" hidden={this.props.modalBtnOkHidden}
-            onClick={this.props.modalBtnOkClick}>Ok</Button>
-          <Button color="primary" hidden={this.props.modalBtnDeleteHidden}
-            onClick={this.props.modalBtnDeleteClick}>Delete</Button>
-        </ModalFooter>
-      </Modal>
-    )
-  }
-}
-
-class HeaderMainCard extends React.Component<any, {}> {
-  render() {
-    return (
-      <CardHeader>
-        <Row>
-          <Col>
-            <Label for="pokemonFilterName">Filter by name</Label>
-            <Input type="text" name="filterName" id="pokemonFilterName"
-              value={this.props.nameFilterValue} onChange={this.props.nameFilterOnChange} />
-          </Col>
-          <Col>
-              <Button color="primary" className="float-right" onClick={this.props.handleNewPokemon}><h1>+</h1></Button>
-          </Col>
-        </Row>
-      </CardHeader>
-    )
-  }
-}
-
-class PokemonDeck extends React.Component<any, {}> {
-  render() {
-    return (
-      <CardDeck>
-        {this.props.pokemons2show.map((pokemon, index) =>
-            <PokemonCard pokemon={pokemon} key={pokemon.id}
-              handlePokemonDelete={this.props.handlePokemonDelete}
-              handlePokemonView={this.props.handlePokemonView}
-            />
-          )
-        }
-      </CardDeck>
-    )
-  }
-}
-
-class PokemonCard extends React.Component<any, {}> {
-  private pcHandlePokemonDelete(pokemonId) {
-    this.props.handlePokemonDelete(pokemonId)
-  }
-
-  private pcHandlePokemonView(pokemonId) {
-    this.props.handlePokemonView(pokemonId)
-  }
-
-  render() {
-    const pokemon = this.props.pokemon
-    return (
-      <div className="w-50 p-3">
-        <Card outline color="primary">
-          <CardImg top width="100%" src="/images/pokeball_card.png" alt="Card image cap" />
-          <CardBody>
-            <CardTitle>{pokemon.name}</CardTitle>
-            <CardText>{pokemon.description}</CardText>
-            <ButtonGroup  className="w-100">
-              <Button color="danger" className="w-50" onClick={this.pcHandlePokemonDelete.bind(this, pokemon.id)}>Delete</Button>
-              <Col sm={2} />
-              <Button color="primary" className="w-50" onClick={this.pcHandlePokemonView.bind(this, pokemon.id)}>View</Button>
-            </ButtonGroup>
           </CardBody>
         </Card>
       </div>

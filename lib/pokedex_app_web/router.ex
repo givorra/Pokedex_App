@@ -16,7 +16,9 @@ defmodule PokedexAppWeb.Router do
   scope "/api", PokedexAppWeb do
     pipe_through :api
 
-    resources "/pokemons", PokemonController, except: [:new, :edit]
+      resources "/pokemons", PokemonController, except: [:new, :edit]
+      # Tengo que saber en el cliente, si puedo añadir favorito, teniendo en cuenta es un put o un create
+      #resources "/pokemons/can_add_favourite", PokemonController, except: [:new, :edit]
   end
 
   scope "/", PokedexAppWeb do

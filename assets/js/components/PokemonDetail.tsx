@@ -2,8 +2,9 @@ import * as React from 'react'
 import { Table, Button, ButtonGroup, Col, Row, Label, Modal, ModalHeader, ModalBody,
   ModalFooter, FormGroup, Card, CardImg, CardText, CardDeck, CardBody, CardTitle, CardSubtitle }
   from 'reactstrap'
-import { AvForm, AvField, AvInput, AvGroup } from 'availity-reactstrap-validation'
+
 import IPokemon from '../interfaces/IPokemon'
+import PokemonForm from './PokemonForm'
 
 const modalDefault: IModal = { isOpen: false, title: "", body: "", hiddenBtnSave: true,
   hiddenBtnOk: true, hiddenBtnCancel: true}
@@ -41,14 +42,7 @@ interface IPokemonsDetailState {
 export default class PokemonDetail extends React.Component <any, IPokemonsDetailState> {
   constructor(props: number) {
       super(props)
-      this.handleName = this.handleName.bind(this)
-      this.handleType1 = this.handleType1.bind(this)
-      this.handleType2 = this.handleType2.bind(this)
-      this.handleFavourite = this.handleFavourite.bind(this)
-      this.handleDescription = this.handleDescription.bind(this)
-      this.handleEvolutionTo = this.handleEvolutionTo.bind(this)
-      this.handleSaveData = this.handleSaveData.bind(this)
-      this.handleGoBack = this.handleGoBack.bind(this)
+      this.handleModal = this.handleModalClose.bind(this);
       this.handleModalClose = this.handleModalClose.bind(this);
       this.handleModalSave = this.handleModalSave.bind(this);
 
@@ -83,49 +77,9 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       fetch('/api/pokemons/' + this.state.pokemon.id)
         .then((response) => response.json())
         .then((data) => {
-          if (data.data == null)
-            this.props.history.replace('/create-pokemon')
-          else
-            this.setState({ pokemon: data.data, loading: false })
+          this.setState({ pokemon: data.data, loading: false })
         })
     }
-  }
-
-  private handleName(event) {
-    let pokemon = this.state.pokemon
-    pokemon.name = event.target.value
-    this.setState({ pokemon: pokemon })
-  }
-
-  private handleType1(event) {
-    let pokemon = this.state.pokemon
-    pokemon.type1 = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleType2(event) {
-    let pokemon = this.state.pokemon
-    pokemon.type2 = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleFavourite(event) {
-    let pokemon = this.state.pokemon
-    pokemon.favourite = event.target.checked
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleDescription(event) {
-    let pokemon = this.state.pokemon
-    pokemon.description = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleEvolutionTo(event) {
-    let pokemon = this.state.pokemon
-    pokemon.evolution_to = event.target.value
-    this.setState({ pokemon: pokemon })
-
   }
 
   private persistData() {
@@ -148,7 +102,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     const headers = new Headers()
     //headers.append("Accept", "application/json")
     headers.append('Content-Type', 'application/json')
-
+    let haveErrors = false
     fetch(route,
       {
         method: method,
@@ -156,28 +110,33 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
         body: JSON.stringify({"pokemon": this.state.pokemon})
         })
       .then((response) => {
-        if(response.ok)
-        {
-          modal.body = "Succes!"
+        if (!response.ok) {
+          response.json().then((data) => {
+              for(let error in data.error)
+              {
+                modal.body += "\n > " + error + ": " + data.errors[error]
+                this.setState({modal: modal})
+              }
+          })
+            //throw Error(response.json());
         }
-        else {
-          modal.body = "Error: " + response.status + " " + response.statusText
-        }
+        return response.json();
+    }).then((data) => {
+      modal.body = "Success!"
+      this.setState({modal: modal})
+    }).catch((data) => {
 
-        this.setState({ modal: modal})
-        //return response.json()
-      })
-      //.then((data) =>  alert( JSON.stringify( data )))
+    });
   }
 
-  private handleSaveData() {
+  private handleSaveData(pokemon: IPokemon) {
     let modal = Object.assign({}, modalDefault);
     modal.isOpen = true
     modal.title = titleSavePokemon
     modal.body = bodySavePokemon
     modal.hiddenBtnSave = false
     modal.hiddenBtnCancel = false
-    this.setState({modal: modal})
+    this.setState({modal: modal, pokemon: pokemon})
 
   }
 
@@ -202,14 +161,14 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           <Button color="secondary" hidden={this.state.modal.hiddenBtnCancel}
             onClick={this.handleModalClose}>Cancel</Button>
           <Button color="primary" hidden={this.state.modal.hiddenBtnOk}
-            onClick={this.handleGoBack}>Ok</Button>
+            onClick={this.handleGoBack.bind(this)}>Ok</Button>
           <Button color="primary" hidden={this.state.modal.hiddenBtnSave}
             onClick={this.handleModalSave}>Save</Button>
         </ModalFooter>
       </Modal>
     )
   }
-
+/*
   private renderForm() {
     return (
       <AvForm onValidSubmit={this.handleSaveData}>
@@ -250,19 +209,17 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       </AvForm>
     )
   }
-
+*/
   render(): JSX.Element {
-    const content = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : this.renderForm()
     const modal = this.renderModal()
+    //console.log(this.state.pokemon)
     return (
       <div>
         {modal}
         <Card>
           <CardImg top width="100%" src="/images/pokeball_detail_card.png" alt="Card image cap" />
           <CardBody>
-            {content}
+            <PokemonForm pokemon={this.state.pokemon} onBack={this.handleGoBack.bind(this)} onSubmit={(pokemon) => this.handleSaveData(pokemon)} />
           </CardBody>
           <br/><br/>
         </Card>
