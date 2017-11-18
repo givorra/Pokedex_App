@@ -69,18 +69,22 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     }
   }
 
+  private getFetchHeaders() {
+    let headers = new Headers()
+    headers.append('Content-Type', 'application/json')
+    //headers.append("Accept", "application/json")
+
+    return headers
+  }
+
   private persistData() {
-    let modal = Object.assign({}, pokemonDetailModalDefault);
+    let modal = Object.assign({}, pokemonDetailModalDefault)
     modal.title = titleSavePokemon
     modal.isOpen = true
     modal.hiddenBtnOk = false
     const apiResource = this.getApiResourceByMode()
+    const headers = this.getFetchHeaders()
 
-    const headers = new Headers()
-    headers.append('Content-Type', 'application/json')
-    //headers.append("Accept", "application/json")
-
-    let haveErrors = false
     fetch(apiResource,
       {
         method: this.state.mode,
@@ -89,31 +93,35 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
         })
       .then((response) => {
         if (!response.ok) {
-          response.json().then((data) => {
-              for(let error in data.error)
-              {
-                modal.body += "\n > " + error + ": " + data.errors[error]
-                this.setState({modal: modal})
-              }
-          })
-            //throw Error(response.json());
+          modal.operationError = true
+          modal.body = "" + response.status + " " + response.statusText + " -> "
         }
-        return response.json();
+        return response.json()
     }).then((data) => {
-      modal.body = "Success!"
-      this.setState({modal: modal})
+      if(modal.operationError) {
+        modal.title = "Error"
+        modal.body = ""
+        for(let error in data.errors)
+        {
+          modal.body += "\nField \"" + error + "\": [" + data.errors[error] + "]"
+        }
+        this.setState({modal: modal})
+      }
+      else {
+        modal.body = "Success!"
+        this.setState({modal: modal})
+      }
     })
   }
 
   private handleSaveData(pokemon: IPokemon) {
-    let modal = Object.assign({}, pokemonDetailModalDefault);
+    let modal = Object.assign({}, pokemonDetailModalDefault)
     modal.isOpen = true
     modal.title = titleSavePokemon
     modal.body = bodySavePokemon
     modal.hiddenBtnSave = false
     modal.hiddenBtnCancel = false
     this.setState({modal: modal, pokemon: pokemon})
-
   }
 
   private handleGoBack() {
@@ -134,7 +142,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
           <CardBody>
             <PokemonForm pokemon={this.state.pokemon} onBack={this.handleGoBack.bind(this)} onSubmit={(pokemon) => this.handleSaveData(pokemon)} />
           </CardBody>
-          <br/><br/>
+          <br/>
         </Card>
       </div>
     )

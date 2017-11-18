@@ -2,7 +2,8 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 
 export const pokemonDetailModalDefault: IPokemonDetailModalState = { isOpen: false,
-  title: "", body: "", hiddenBtnSave: true, hiddenBtnOk: true, hiddenBtnCancel: true}
+  title: "", body: "", hiddenBtnSave: true, hiddenBtnOk: true, hiddenBtnCancel: true,
+  operationError: false}
 
 export interface IPokemonDetailModalState {
   isOpen: boolean
@@ -11,6 +12,7 @@ export interface IPokemonDetailModalState {
   hiddenBtnSave: boolean
   hiddenBtnOk: boolean
   hiddenBtnCancel: boolean
+  operationError: boolean
 }
 
 export class PokemonDetailModal extends React.Component<any, IPokemonDetailModalState> {
@@ -36,7 +38,12 @@ export class PokemonDetailModal extends React.Component<any, IPokemonDetailModal
   }
 
   private handleOnBack() {
-    this.props.goBack()
+    if(!this.state.operationError) {
+      this.props.goBack()
+    }
+    else {
+      this.setState(pokemonDetailModalDefault)
+    }
   }
 
   private handleModalSave() {
