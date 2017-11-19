@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { CardDeck} from 'reactstrap'
+import { CardDeck } from 'reactstrap'
 import PokemonCard from './PokemonCard'
 
 export default class PokemonDeck extends React.Component<any, {}> {
