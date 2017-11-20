@@ -7,6 +7,8 @@ RUN mix local.hex --force
 # install the latest phoenix 
 RUN mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
 
+RUN mix local.rebar --force
+
 # install node
 RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh  
 RUN bash nodesource_setup.sh  
@@ -22,7 +24,5 @@ RUN mix deps.get
 
 # install node dependencies
 RUN npm install  
-RUN node node_modules/brunch/bin/brunch build
 
-# run phoenix in *dev* mode on port 4000
-CMD mix phx.server  
+

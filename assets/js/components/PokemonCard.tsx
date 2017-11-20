@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, ButtonGroup, Col, Button }
   from 'reactstrap'
-import IPokemon from '../Interfaces/IPokemon'
+import IPokemon from '../interfaces/IPokemon'
 
 const initialState: IPokemonCardState = {
   pokemon: {
