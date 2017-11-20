@@ -1,3 +1,6 @@
+This application works on the Phoenix framework. The back-end is implemented in Elixir and the code is in 'lib/' folder.
+The front-end is implemented with React js and the code is in the 'assets/js' folder
+
 ## The stack
 
 * Elixir (^1.5.0)
@@ -8,15 +11,37 @@
 * TypeScript (^2.4.2)
 * Webpack (^3.4.1)
 
-## Getting started
+## Start
+* Clone repository:
+    git clone https://github.com/givorra/Pokedex_App.git
 
-To start your Phoenix server:
+## a) Run Pokedex App in Docker Container
+* Prerrequisites:
+    install docker: https://docs.docker.com/engine/installation/
+    install docker-compose: https://docs.docker.com/compose/install/
+* From project folder, run
+    sudo docker-compose up -d web
+    sudo docker-compose run web mix deps.get
+    sudo docker-compose run web npm install
+    sudo docker-compose run web mix ecto.create
+    sudo docker-compose run web mix ecto.migrate
+    sudo docker-compose restart web
+    sudo docker-compose run web
 
-* Install dependencies with `mix deps.get` and `npm install`, in that order.
-* Modify the database settings in each `config/` files according to your needs.
-* Create and migrate your database with `mix ecto.setup` (this runs `mix ecto.create`, `mix ecto.migrate` and `mix run priv/repo/seeds.exs` in order)
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and create you first pokemon.
+
+## b) Run Pokedex App in Windows/Linux SO
+* Prerrequisites:
+    install phoenix: https://hexdocs.pm/phoenix/installation.html
+
+To start your app:
+
+* Install project dependencies with `mix deps.get` and `npm install`, in that order.
+* Modify the database settings in each `config/` files according to your needs (user, password, host).
+* Create and migrate your database with `mix ecto.create`, `mix ecto.migrate`
 * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser cd Deskand create you first pokemon
 
-Ready to run in production? Please [check out the deployment guides provided by Phoenix](http://www.phoenixframework.org/docs/deployment).
+## Test
++ You can execute backend tests using 'mix test' command

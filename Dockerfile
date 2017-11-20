@@ -17,12 +17,6 @@ RUN apt-get install nodejs
 # create app folder
 RUN mkdir /app  
 COPY . /app  
-WORKDIR /app
-
-# install dependencies
-RUN mix deps.get
-
-# install node dependencies
-RUN npm install  
+WORKDIR /app 
 
 
