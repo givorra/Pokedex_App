@@ -13,20 +13,20 @@ The front-end is implemented with React js and the code is in the 'assets/js' fo
 
 ## Start
 * Clone repository:
-    git clone https://github.com/givorra/Pokedex_App.git
+    `git clone https://github.com/givorra/Pokedex_App.git`
 
 ## a) Run Pokedex App in Docker Container
 * Prerrequisites:
     install docker: https://docs.docker.com/engine/installation/
     install docker-compose: https://docs.docker.com/compose/install/
 * From project folder, run
-    sudo docker-compose up -d web
-    sudo docker-compose run web mix deps.get
-    sudo docker-compose run web npm install
-    sudo docker-compose run web mix ecto.create
-    sudo docker-compose run web mix ecto.migrate
-    sudo docker-compose restart web
-    sudo docker-compose run web
+    `sudo docker-compose up -d web`
+    `sudo docker-compose run web mix deps.get`
+    `sudo docker-compose run web npm install`
+    `sudo docker-compose run web mix ecto.create`
+    `sudo docker-compose run web mix ecto.migrate`
+    `sudo docker-compose restart web`
+    `sudo docker-compose run web`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and create you first pokemon.
 
