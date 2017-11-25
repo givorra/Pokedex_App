@@ -19,4 +19,7 @@ RUN mkdir /app
 COPY . /app  
 WORKDIR /app 
 
+RUN mix deps.get
+RUN npm install
+
 
