@@ -56,8 +56,15 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :pokedex_app, PokedexApp.Repo,
   adapter: Ecto.Adapters.Postgres,
+  # Local configuration
   username: "postgres",
   password: "postgres",
+  hostname: "localhost",
+
+  # Docker configuration
+  #username: System.get_env("DB_ENV_POSTGRES_USER"),
+  #password: System.get_env("DB_ENV_POSTGRES_PASSWORD"),
+  #hostname: System.get_env("DB_ENV_POSTGRES_HOST"),
+  
   database: "pokedex_app_dev",
-  hostname: "db",
   pool_size: 10

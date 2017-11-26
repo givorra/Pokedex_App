@@ -53,7 +53,12 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
       fetch('/api/pokemons/' + this.state.pokemon.id)
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ pokemon: data.data, loading: false })
+          if(data.data) {
+            this.setState({ pokemon: data.data, loading: false })
+          }
+          else {
+            this.props.history.replace("/create-pokemon")
+          }
         })
     }
   }
@@ -82,6 +87,7 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     modal.title = titleSavePokemon
     modal.isOpen = true
     modal.hiddenBtnOk = false
+    modal.disabledBtnOk = false
     const apiResource = this.getApiResourceByMode()
     const headers = this.getFetchHeaders()
 
@@ -121,6 +127,8 @@ export default class PokemonDetail extends React.Component <any, IPokemonsDetail
     modal.body = bodySavePokemon
     modal.hiddenBtnSave = false
     modal.hiddenBtnCancel = false
+    modal.disabledBtnSave = false
+    modal.disabledBtnCancel = false
     this.setState({modal: modal, pokemon: pokemon})
   }
 

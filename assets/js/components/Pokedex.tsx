@@ -8,6 +8,9 @@ import { PokedexModal, IPokedexModalState, modalPokedexDefault } from './Pokedex
 const titleDeletePokemon = "Delete Pokemon"
 const bodyDeletePokemon = "¿Are you sure you want to delete this pokemon?"
 
+function comparePokemonId(a, b) {
+  return (a.id > b.id)
+}
 // The interface for our API response
 interface ApiResponse {
   data: IPokemon[]
@@ -40,7 +43,7 @@ export default class Pokedex extends React.Component<any, PokedexState> {
     fetch('/api/pokemons')
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ pokemons: data.data, loading: false })
+        this.setState({ pokemons: data.data.sort(comparePokemonId), loading: false })
         this.applyFilters(data.data, this.state.name_filter, this.state.favourite_filter)
       })
   }
@@ -78,6 +81,8 @@ export default class Pokedex extends React.Component<any, PokedexState> {
     modal.body = bodyDeletePokemon
     modal.hiddenBtnDelete = false
     modal.hiddenBtnCancel = false
+    modal.disabledBtnDelete = false
+    modal.disabledBtnCancel = false
     modal.idPokemonSelected = idPokemon
     this.setState({modal: modal})
   }
@@ -91,6 +96,7 @@ export default class Pokedex extends React.Component<any, PokedexState> {
     modal.title = titleDeletePokemon
     modal.isOpen = true
     modal.hiddenBtnOk = false
+    modal.disabledBtnOk = false
 
     fetch('/api/pokemons/' + this.state.modal.idPokemonSelected, { method: "DELETE"})
       .then((response) => {
