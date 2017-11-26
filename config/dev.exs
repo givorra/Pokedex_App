@@ -57,14 +57,14 @@ config :phoenix, :stacktrace_depth, 20
 config :pokedex_app, PokedexApp.Repo,
   adapter: Ecto.Adapters.Postgres,
   # Local configuration
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  #username: "postgres",
+  #password: "postgres",
+  #hostname: "localhost",
 
   # Docker configuration
-  #username: System.get_env("DB_ENV_POSTGRES_USER"),
-  #password: System.get_env("DB_ENV_POSTGRES_PASSWORD"),
-  #hostname: System.get_env("DB_ENV_POSTGRES_HOST"),
-  
+  username: System.get_env("DB_ENV_POSTGRES_USER"),
+  password: System.get_env("DB_ENV_POSTGRES_PASSWORD"),
+  hostname: System.get_env("DB_ENV_POSTGRES_HOST"),
+
   database: "pokedex_app_dev",
   pool_size: 10

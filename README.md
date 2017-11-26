@@ -19,14 +19,10 @@ The front-end is implemented with React js and the code is in the 'assets/js' fo
 * Prerrequisites:
     install docker: https://docs.docker.com/engine/installation/
     install docker-compose: https://docs.docker.com/compose/install/
-* Modify database connection in config/dev.exs file
-* From project folder, run
-    `sudo docker-compose up -d web`
-    `sudo docker-compose run web mix ecto.create`
-    `sudo docker-compose run web mix ecto.migrate`
-    `sudo docker-compose run web mix run priv/repo/seeds.exs`
-    `sudo docker-compose restart web`
-    `sudo docker-compose run web`
+* Configurate database connection in config/dev.exs file
+* Deploy application `sudo docker-compose up -d web`
+* Download and install project dependencies, create, migrate and initialize db `sudo docker-compose run web ./init_project.sh`
+* Restart and run application service `sudo docker-compose restart web && sudo docker-compose run web`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and create you first pokemon.
 
@@ -36,11 +32,8 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser an
 
 To start your app:
 
-* Modify database connection in config/dev.exs file
-* Install project dependencies with `mix deps.get` and `npm install`, in that order.
-* Modify the database settings in each `config/` files according to your needs (user, password, host).
-* Create and migrate your database with `mix ecto.create`, `mix ecto.migrate`
-* Insert initial data `mix run priv/repo/seeds.ex`
+* Configurate database connection in config/dev.exs file
+* Create, migrate and initialize db, download and install dependencies `sudo docker-compose run web ./init_project.sh`
 * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser cd Deskand create you first pokemon
