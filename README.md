@@ -12,8 +12,9 @@ The front-end is implemented with React js and the code is in the 'assets/js' fo
 * Webpack (^3.4.1)
 
 ## Start
-* Clone repository:
+* Clone repository and change to project directory:
     `git clone https://github.com/givorra/Pokedex_App.git`
+    `cd Pokedex_App`
 
 ## a) Run Pokedex App in Docker Container
 * Prerrequisites:
@@ -24,7 +25,7 @@ The front-end is implemented with React js and the code is in the 'assets/js' fo
 * Download and install project dependencies, create, migrate and initialize db `sudo docker-compose run web ./init_project.sh`
 * Restart and run application service `sudo docker-compose restart web && sudo docker-compose run web`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and create you first pokemon.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## b) Run Pokedex App in Windows/Linux SO
 * Prerrequisites:
@@ -33,10 +34,10 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser an
 To start your app:
 
 * Configurate database connection in config/dev.exs file
-* Create, migrate and initialize db, download and install dependencies `sudo docker-compose run web ./init_project.sh`
+* Create, migrate and initialize db, download and install dependencies `sudo ./init_project.sh`
 * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser cd Deskand create you first pokemon
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Test
 + You can execute backend tests using 'mix test' command
