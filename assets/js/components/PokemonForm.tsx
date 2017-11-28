@@ -76,7 +76,7 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
     let pokemon = this.state.pokemon;
     return (
       <AvForm onValidSubmit={() => this.props.onSubmit(this.state.pokemon)}>
-        <AvField name="name" label="Name" required onChange={(event) => this.handleName(event)}
+        <AvField name="name" label="Name" required onBlur={(event) => this.handleName(event)}
           value={this.state.pokemon.name} minLength="4" maxLength="24"
           helpMessage="  (*) Between 4 - 24 characters"/>
         <Row>
@@ -86,23 +86,23 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
         </Row>
         <Row>
           <Col>
-            <AvField name="type1"  required onChange={(event) => this.handleType1(event)}
+            <AvField name="type1"  required onBlur={(event) => this.handleType1(event)}
               value={this.state.pokemon.type1} helpMessage="  (*)"/>
           </Col>
           <Col>
-            <AvField name="type2" label="" onChange={(event) => this.handleType2(event)}
+            <AvField name="type2" label="" onBlur={(event) => this.handleType2(event)}
               value={this.state.pokemon.type2} />
           </Col>
         </Row>
-        <AvField name="evolution_to" label="Evolution to" onChange={(event) => this.handleEvolutionTo(event)}
+        <AvField name="evolution_to" label="Evolution to" onBlur={(event) => this.handleEvolutionTo(event)}
           value={this.state.pokemon.evolution_to} />
         <AvField type="textarea" name="description" label="Description"
-          onChange={(event) => this.handleDescription(event)}
+          onBlur={(event) => this.handleDescription(event)}
           required helpMessage="  (*) Min. 30 characters" minLength="30"
           value={this.state.pokemon.description} />
         <AvGroup>
           <Label check >
-            <AvInput type="checkbox" name="favourite" onChange={(event) => this.handleFavourite(event)}
+            <AvInput type="checkbox" name="favourite" onBlur={(event) => this.handleFavourite(event)}
               checked={this.state.pokemon.favourite}/>
             Mark as favourite
           </Label>
