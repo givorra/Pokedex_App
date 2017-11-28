@@ -36,47 +36,12 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
     }
   }
 
-  private handleName(event) {
-    let pokemon = this.state.pokemon
-    pokemon.name = event.target.value
-    this.setState({ pokemon: pokemon })
-  }
-
-  private handleType1(event) {
-    let pokemon = this.state.pokemon
-    pokemon.type1 = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleType2(event) {
-    let pokemon = this.state.pokemon
-    pokemon.type2 = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-   private handleFavourite(event) {
-    let pokemon = this.state.pokemon
-    pokemon.favourite = event.target.checked
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleDescription(event) {
-    let pokemon = this.state.pokemon
-    pokemon.description = event.target.value
-    this.setState({ pokemon: pokemon })
-
-  }
-  private handleEvolutionTo(event) {
-    let pokemon = this.state.pokemon
-    pokemon.evolution_to = event.target.value
-    this.setState({ pokemon: pokemon })
-  }
-
   public render(): JSX.Element {
     let pokemon = this.state.pokemon;
     return (
       <AvForm onValidSubmit={() => this.props.onSubmit(this.state.pokemon)}>
-        <AvField name="name" label="Name" required onBlur={(event) => this.handleName(event)}
+        <AvField name="name" label="Name" required
+          onBlur={(event) => this.state.pokemon.name = event.target.value}
           value={this.state.pokemon.name} minLength="4" maxLength="24"
           helpMessage="  (*) Between 4 - 24 characters"/>
         <Row>
@@ -86,23 +51,27 @@ export default class PokemonForm extends React.Component<any, PokemonFormState> 
         </Row>
         <Row>
           <Col>
-            <AvField name="type1"  required onBlur={(event) => this.handleType1(event)}
+            <AvField name="type1"  required
+              onBlur={(event) => this.state.pokemon.type1 = event.target.value}
               value={this.state.pokemon.type1} helpMessage="  (*)"/>
           </Col>
           <Col>
-            <AvField name="type2" label="" onBlur={(event) => this.handleType2(event)}
+            <AvField name="type2" label=""
+              onBlur={(event) => this.state.pokemon.type2 = event.target.value}
               value={this.state.pokemon.type2} />
           </Col>
         </Row>
-        <AvField name="evolution_to" label="Evolution to" onBlur={(event) => this.handleEvolutionTo(event)}
+        <AvField name="evolution_to" label="Evolution to"
+          onBlur={(event) => this.state.pokemon.evolution_to = event.target.value}
           value={this.state.pokemon.evolution_to} />
         <AvField type="textarea" name="description" label="Description"
-          onBlur={(event) => this.handleDescription(event)}
+          onBlur={(event) => this.state.pokemon.description = event.target.value}
           required helpMessage="  (*) Min. 30 characters" minLength="30"
           value={this.state.pokemon.description} />
         <AvGroup>
           <Label check >
-            <AvInput type="checkbox" name="favourite" onBlur={(event) => this.handleFavourite(event)}
+            <AvInput type="checkbox" name="favourite"
+              onBlur={(event) => this.state.pokemon.favourite = event.target.checked}
               checked={this.state.pokemon.favourite}/>
             Mark as favourite
           </Label>
